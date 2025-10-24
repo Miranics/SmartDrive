@@ -10,24 +10,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InputComponent(text: "Name"),
-              SizedBox(height: 16),
-              InputComponent(text: "Email"),
-              SizedBox(height: 16),
-              InputComponent(text: "Password"),
-              SizedBox(height: 16),
-              InputComponent(text: "Confirm Password"),
-            ],
-          ),
-        ),
-      ),
-    );
+    return MaterialApp(home: Scaffold(body: Text("Hello world")));
   }
 }
