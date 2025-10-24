@@ -28,7 +28,7 @@ class ButtonComponent extends StatelessWidget {
     }
     switch (type) {
       case ButtonType.primary:
-        return Color(0xFF004299);
+        return C)olor(0xFF004299;
       case ButtonType.secondary:
         return Color(0xFF006FFF);
       case ButtonType.small:
