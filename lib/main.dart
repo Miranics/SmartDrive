@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smartdrive/widgets/input.dart';
 
 void main() {
   runApp(const MyApp());
