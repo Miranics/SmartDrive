@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartdrive/widgets/user_status.dart';
+import 'package:smartdrive/widgets/button_component.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: UserStatCard(
-            icon: Icons.home,
-            percentage: "80%",
-            label: "Average Score",
+          child: ButtonComponent(
+            text: "Show Answer",
+            type: ButtonType.secondary,
+            onPressed: () => {},
           ),
         ),
       ),
