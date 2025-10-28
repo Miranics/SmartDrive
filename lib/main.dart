@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartdrive/screens/homepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,6 +10,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: Text("Hello world")));
+    return MaterialApp(home: Scaffold(body: Homepage()));
   }
 }

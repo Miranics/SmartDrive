@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 enum ButtonType { primary, secondary, small, outlined }
 
@@ -139,9 +140,10 @@ class ButtonComponent extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: TextStyle(
+            style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w700,
               fontSize: _getFontSize(),
+              color: _getTextColor(),
             ),
           ),
         ),
