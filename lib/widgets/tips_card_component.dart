@@ -1,82 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart'; // Re-adding google_fonts
 
 class TipsCardComponent extends StatelessWidget {
-  final String imgPath;
   final String title;
   final String description;
-  final VoidCallback onPressed;
+  final double? width;
+  final EdgeInsets? margin;
 
   const TipsCardComponent({
     super.key,
-    required this.imgPath,
     required this.title,
     required this.description,
-    required this.onPressed,
+    this.width,
+    this.margin,
   });
 
   @override
   Widget build(BuildContext context) {
+    // This container creates the white card with rounded corners and a subtle shadow
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-              child: Image.asset(
-                imgPath,
-                width: double.infinity,
-                height: 200,
-                fit: BoxFit.cover,
-              ),
+      width: width,
+      margin: margin ?? const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            spreadRadius: 1,
+            blurRadius: 10,
+            offset: const Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // This is the blue accent line on the left
+          Container(
+            width: 4.0,
+            // Adjust height based on text, or set a fixed one.
+            // Let's make it flexible by not setting a fixed height here.
+            height: 48.0, // Or perhaps get height from text? For now, a fixed height.
+            decoration: BoxDecoration(
+              color: const Color(0xFF0055FF), // An example blue color
+              borderRadius: BorderRadius.circular(2.0),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+          ),
+          const SizedBox(width: 12.0),
+          // The text content is in an Expanded Column to fill the remaining space
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min, // So column doesn't stretch infinitely
+              children: [
+                // Title Text
+                Text(
+                  title,
+                  style: GoogleFonts.inter( // Using GoogleFonts like your button example
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                    ),
+                ),
+                const SizedBox(height: 4.0),
+                // Description Text
+                Text(
+                  description,
+                  style: GoogleFonts.inter(
+                    fontSize: 14.0,
+                    color: Colors.black54,
+                    height: 1.4, // Line height for better readability
                   ),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: onPressed,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF004299),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    ),
-                    child: Text(
-                      'Learn More',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
