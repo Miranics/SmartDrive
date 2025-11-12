@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 enum ButtonType { primary, secondary, small, outlined }
 
@@ -11,6 +12,7 @@ class ButtonComponent extends StatelessWidget {
   final Color? backgroundColor;
   final OutlinedBorder? shape;
   final EdgeInsets? margin;
+  
   const ButtonComponent({
     super.key,
     required this.text,
@@ -22,6 +24,7 @@ class ButtonComponent extends StatelessWidget {
     this.shape,
     this.margin,
   });
+
   Color _getBackgroundColor() {
     if (backgroundColor != null) {
       return backgroundColor!;
@@ -139,9 +142,10 @@ class ButtonComponent extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
+            style: GoogleFonts.montserrat(
+              fontWeight: FontWeight.w500,
               fontSize: _getFontSize(),
+              color: _getTextColor(),
             ),
           ),
         ),
