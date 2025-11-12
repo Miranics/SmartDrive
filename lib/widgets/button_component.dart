@@ -12,6 +12,7 @@ class ButtonComponent extends StatelessWidget {
   final Color? backgroundColor;
   final OutlinedBorder? shape;
   final EdgeInsets? margin;
+  
   const ButtonComponent({
     super.key,
     required this.text,
@@ -23,6 +24,7 @@ class ButtonComponent extends StatelessWidget {
     this.shape,
     this.margin,
   });
+
   Color _getBackgroundColor() {
     if (backgroundColor != null) {
       return backgroundColor!;
