@@ -143,7 +143,7 @@ class ButtonComponent extends StatelessWidget {
           child: Text(
             text,
             style: GoogleFonts.montserrat(
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w500,
               fontSize: _getFontSize(),
               color: _getTextColor(),
             ),
