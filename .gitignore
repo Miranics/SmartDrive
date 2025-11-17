@@ -33,6 +33,14 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Auto-generated plugin registrants
+**/Flutter/GeneratedPluginRegistrant.swift
+**/Flutter/GeneratedPluginRegistrant.h
+**/Flutter/GeneratedPluginRegistrant.m
+**/flutter/generated_plugin_registrant.cc
+**/flutter/generated_plugin_registrant.h
+**/flutter/GeneratedPluginRegistrant.swift
+
 # Symbolication related
 app.*.symbols
 
