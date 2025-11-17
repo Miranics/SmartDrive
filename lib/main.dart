@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartdrive/screens/homepage.dart';
-import 'package:smartdrive/screens/login.dart';
-import 'package:smartdrive/screens/signup.dart';
+import 'package:smartdrive/screens/WelcomePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: Login()));
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(body: Welcomepage()),
+    );
   }
 }
