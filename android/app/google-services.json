@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "400113648098",
+    "project_id": "smartdrive-dc55d",
+    "storage_bucket": "smartdrive-dc55d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400113648098:android:e3ad0c5432888824e539bb",
+        "android_client_info": {
+          "package_name": "com.example.smartdrive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2EEH7vkcHvZa7v2QGMMb6jrEhr2saOdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

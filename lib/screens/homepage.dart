@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smartdrive/widgets/button_component.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smartdrive/services/auth_service.dart';
+import 'package:smartdrive/widgets/button_component.dart';
+import 'package:smartdrive/widgets/storage_upload_card.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -8,52 +10,53 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFC0E2FF),
-
+      backgroundColor: const Color(0xFFC0E2FF),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text('SmartDrive'),
+        actions: [
+          IconButton(
+            onPressed: AuthService.signOut,
+            icon: const Icon(Icons.logout_rounded),
+            tooltip: 'Sign out',
+          ),
+        ],
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/images/logo.png", width: 382, height: 138),
-              Transform.translate(
-                offset: Offset(0, -38),
-                child: Text(
-                  "SmartDrive",
-                  style: TextStyle(
-                    fontFamily: "NicoMoji",
-                    fontSize: 40,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF004299),
-                  ),
+              Image.asset('assets/images/logo.png', width: 260, height: 120),
+              const SizedBox(height: 12),
+              const Text(
+                'SmartDrive',
+                style: TextStyle(
+                  fontFamily: 'NicoMoji',
+                  fontSize: 40,
+                  color: Color(0xFF004299),
                 ),
               ),
-              // SizedBox(height: 40),
+              const SizedBox(height: 24),
               Text(
-                "At Smart Drive, we're dedicated to make your driving learning experience seamless and enjoyable.",
+                "At SmartDrive, we're dedicated to making your driving learning experience seamless and enjoyable.",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
-                  fontSize: 16,
-                  height: 1.5,
-                  color: Colors.black,
-                ),
+                style: GoogleFonts.montserrat(fontSize: 16, height: 1.5, color: Colors.black87),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 20),
               Text(
-                "Practice for your provisional license with flashcards, quizzes, and mock tests, and get tips on the practical driving exam.",
+                'Practice for your provisional license with flashcards, quizzes, and mock tests, and get tips on the practical driving exam.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
-                  fontSize: 16,
-                  height: 1.5,
-                  color: Colors.black,
-                ),
+                style: GoogleFonts.montserrat(fontSize: 16, height: 1.5, color: Colors.black87),
               ),
-              SizedBox(height: 100),
+              const SizedBox(height: 30),
+              const StorageUploadCard(),
+              const SizedBox(height: 30),
               ButtonComponent(
-                text: "Start Now",
-                backgroundColor: Color(0xFF004299),
+                text: 'Start Now',
+                backgroundColor: const Color(0xFF004299),
                 type: ButtonType.small,
                 onPressed: () {},
               ),

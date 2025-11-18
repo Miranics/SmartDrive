@@ -6,12 +6,13 @@ enum ButtonType { primary, secondary, small, outlined }
 class ButtonComponent extends StatelessWidget {
   final String text;
   final ButtonType type;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double? width;
   final double? height;
   final Color? backgroundColor;
   final OutlinedBorder? shape;
   final EdgeInsets? margin;
+  final bool isLoading;
   
   const ButtonComponent({
     super.key,
@@ -23,6 +24,7 @@ class ButtonComponent extends StatelessWidget {
     this.backgroundColor,
     this.shape,
     this.margin,
+    this.isLoading = false,
   });
 
   Color _getBackgroundColor() {
@@ -133,21 +135,30 @@ class ButtonComponent extends StatelessWidget {
         width: _getWidth(),
         height: height,
         child: ElevatedButton(
-          onPressed: onPressed,
+          onPressed: isLoading ? null : onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: _getBackgroundColor(),
             foregroundColor: _getTextColor(),
             padding: _getPadding(),
             shape: _getShape(),
           ),
-          child: Text(
-            text,
-            style: GoogleFonts.montserrat(
-              fontWeight: FontWeight.w500,
-              fontSize: _getFontSize(),
-              color: _getTextColor(),
-            ),
-          ),
+          child: isLoading
+              ? SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(_getTextColor()),
+                  ),
+                )
+              : Text(
+                  text,
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.w500,
+                    fontSize: _getFontSize(),
+                    color: _getTextColor(),
+                  ),
+                ),
         ),
       ),
     );
