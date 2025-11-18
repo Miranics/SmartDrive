@@ -14,6 +14,12 @@ class InputComponent extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool obscureText;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onFieldSubmitted;
+  final Iterable<String>? autofillHints;
+  final bool enableSuggestions;
+  final bool autocorrect;
 
   const InputComponent({
     super.key,
@@ -29,6 +35,12 @@ class InputComponent extends StatelessWidget {
     this.validator,
     this.obscureText = false,
     this.keyboardType,
+    this.textInputAction,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.autofillHints,
+    this.enableSuggestions = true,
+    this.autocorrect = true,
   });
 
   @override
@@ -55,6 +67,12 @@ class InputComponent extends StatelessWidget {
             validator: validator,
             obscureText: obscureText,
             keyboardType: keyboardType,
+            textInputAction: textInputAction,
+            onChanged: onChanged,
+            onFieldSubmitted: onFieldSubmitted,
+            autofillHints: autofillHints,
+            enableSuggestions: enableSuggestions,
+            autocorrect: autocorrect,
             style:
                 fieldTextStyle ??
                 GoogleFonts.montserrat(
