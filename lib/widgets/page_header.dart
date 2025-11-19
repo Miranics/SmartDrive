@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartdrive/constants/app_colors.dart';
 
 class PageHeader extends StatelessWidget {
   final String title;
@@ -16,42 +17,32 @@ class PageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Color(0xFF0066FF),
-            Color(0xFF0052CC),
-          ],
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      decoration: BoxDecoration(
+            gradient: AppColors.getPrimaryBlueGradient(),
+            ),
       child: SafeArea(
         bottom: false,
         child: Row(
           children: [
-            if (onBackPressed != null) ...[
-              IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                onPressed: onBackPressed,
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
+            // Always show Back Button
+            GestureDetector(
+              onTap: onBackPressed,
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.white,
+                size: 24,
               ),
-              const SizedBox(width: 16),
-            ],
+            ),
+            const SizedBox(width:16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
@@ -60,8 +51,8 @@ class PageHeader extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       subtitle!,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
                         fontSize: 16,
                       ),
                     ),
