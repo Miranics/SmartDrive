@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:smartdrive/screens/QuizPage.dart';
-import 'package:smartdrive/screens/WelcomePage.dart';
 import 'package:smartdrive/config/runtime_env.dart';
 import 'package:smartdrive/firebase_options.dart';
 import 'package:smartdrive/screens/homepage.dart';
@@ -12,9 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await Supabase.initialize(
     url: RuntimeEnv.supabaseUrl,
@@ -31,7 +27,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: Welcomepage()),
       title: 'SmartDrive',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF004299)),
@@ -63,4 +58,3 @@ class AuthGate extends StatelessWidget {
     );
   }
 }
-
