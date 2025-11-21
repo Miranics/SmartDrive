@@ -1,42 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:smartdrive/widgets/button_component.dart';
 import 'package:smartdrive/widgets/practice_quiz_card.dart';
 
-class Quizpage extends StatefulWidget {
-  const Quizpage({super.key});
-
-  @override
-  State<Quizpage> createState() => _QuizpageState();
+void main() {
+  runApp(const MaterialApp(home: Quizpage()));
 }
 
-class _QuizpageState extends State<Quizpage> {
-  int? selectedIndex;
+class Quizpage extends StatelessWidget {
+  const Quizpage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PracticeQuizCard(
-        subtitle: 'Question 1 of 10',
-        progress: 0.1,
-        question: 'What does a red traffic light mean?',
-        options: [
-          'Stop completely',
-          'Slow down and proceed with caution',
-          'Speed up to clear the intersection',
-          'Stop only if other vehicles are present',
-        ],
-        selectedIndex: selectedIndex,
-        onOptionSelected: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        onNext: () {
-          // Handle next question
-          print('Next question');
-        },
-        onBack: () {
-          Navigator.pop(context);
-        },
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(title: const Text("Quiz App Example")),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+
+            // --- Example 1: WITH an image ---
+            PracticeQuizCard(
+              questionText:
+                  "What is the maximum speed limit in residential areas in Rwanda?",
+              // Make sure 'assets/image_0.png' exists and is in pubspec.yaml
+              imageAssetPath:
+                  'assets/images/speed-limit-30-sign-260nw-2492496001.webp',
+              options: const ["60 km/h", "30 km/h", "50 km/h", "40 km/h"],
+              onOptionSelected: (index) {
+                // This runs when a user taps an option.
+                // index 0 is A, index 1 is B, etc.
+                print("User tapped option index: $index for Q1");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Selected option index: $index")),
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ButtonComponent(
+                type: ButtonType.secondary,
+                text: "Next Question",
+                onPressed: () {},
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
