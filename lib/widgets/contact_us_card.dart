@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smartdrive/constants/app_colors.dart';
+
 
 class ContactUsCard extends StatelessWidget {
   const ContactUsCard({super.key});
@@ -7,17 +9,10 @@ class ContactUsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Color(0xFF0066FF),
-            Color(0xFF0052CC),
-          ],
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      decoration: BoxDecoration(
+            gradient: AppColors.getPrimaryBlueGradient(),
+            ),
       child: SafeArea(
         top: false,
         child: Column(
@@ -26,7 +21,7 @@ class ContactUsCard extends StatelessWidget {
             const Text(
               'Contact Us',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textSecondary,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -35,7 +30,7 @@ class ContactUsCard extends StatelessWidget {
             const Text(
               'smartdrive@gmail.com',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textSecondary,
                 fontSize: 18,
               ),
             ),
@@ -43,7 +38,7 @@ class ContactUsCard extends StatelessWidget {
             const Text(
               '+250 782 345 678',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textSecondary,
                 fontSize: 18,
               ),
             ),
