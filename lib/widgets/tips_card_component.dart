@@ -43,22 +43,19 @@ class TipsCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Blue curved accent on the left
-            
-            
+                        
             // Icon
             Container(
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AppColors.paleBlue,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
                 child: Image.asset(
                   iconPath,
-                  width: 32,
-                  height: 32,
+                  width: 38,
+                  height: 40,
                   errorBuilder: (context, error, stackTrace) {
                     return const Icon(
                       Icons.drive_eta,
