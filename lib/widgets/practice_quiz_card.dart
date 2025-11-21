@@ -18,24 +18,24 @@ class PracticeQuizCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(16.0),
-      elevation: 0, // Removed shadow for a flatter, cleaner look
-      // Adding a border to make it pop against the white background
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: Colors.grey.shade200),
       ),
-      color: Colors.white, // Card background matches the white theme
+      // 1. Set Main Card color to white
+      color: Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // --- 1. THE QUESTION SECTION (With its own background) ---
+          // --- 1. THE QUESTION SECTION ---
+          // I changed this to White to match "background of the whole thing becomes white"
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors
-                  .blueGrey[50], // <--- The specific "Question Background"
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              color: Colors.white, // Changed from blueGrey[50] to white
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
@@ -59,10 +59,7 @@ class PracticeQuizCard extends StatelessWidget {
                 // --- 2. THE OPTIMIZED IMAGE SECTION ---
                 if (imageAssetPath != null) ...[
                   Container(
-                    // Limit the height so it doesn't take too much space
-                    constraints: const BoxConstraints(
-                      maxHeight: 200, // Max height is 200 pixels
-                    ),
+                    constraints: const BoxConstraints(maxHeight: 200),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
@@ -70,12 +67,7 @@ class PracticeQuizCard extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        imageAssetPath!,
-                        // 'contain' ensures the WHOLE image is seen inside the
-                        // 200px height box, adding whitespace on sides if needed.
-                        fit: BoxFit.contain,
-                      ),
+                      child: Image.asset(imageAssetPath!, fit: BoxFit.contain),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -105,9 +97,17 @@ class PracticeQuizCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
           decoration: BoxDecoration(
-            color: Colors.white,
+            // 2. THIS IS WHERE THE GRADIENT GOES
+            // Replaced solid color with the gradient you requested
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFFFFFFFF), // #FFFFFF (white)
+                Color(0xFFFDF6F6), // #FDF6F6 (light pink/beige)
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
             borderRadius: BorderRadius.circular(12),
-            // A nice clear border for the options
             border: Border.all(color: Colors.grey.shade300),
           ),
           child: Row(
