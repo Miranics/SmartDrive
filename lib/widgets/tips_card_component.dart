@@ -1,83 +1,100 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // Re-adding google_fonts
+import 'package:smartdrive/constants/app_colors.dart';
 
-class TipsCardComponent extends StatelessWidget {
+class TipsCard extends StatelessWidget {
   final String title;
   final String description;
-  final double? width;
-  final EdgeInsets? margin;
+  final String iconPath;
+  final VoidCallback onTap;
 
-  const TipsCardComponent({
+  const TipsCard({
     super.key,
     required this.title,
     required this.description,
-    this.width,
-    this.margin,
+    required this.iconPath,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    // This container creates the white card with rounded corners and a subtle shadow
-    return Container(
-      width: width,
-      margin: margin ?? const EdgeInsets.all(16.0),
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: const Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // This is the blue accent line on the left
-          Container(
-            width: 4.0,
-            // Adjust height based on text, or set a fixed one.
-            // Let's make it flexible by not setting a fixed height here.
-            height: 48.0, // Or perhaps get height from text? For now, a fixed height.
-            decoration: BoxDecoration(
-              color: const Color(0xFF0055FF), // An example blue color
-              borderRadius: BorderRadius.circular(2.0),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+              color: AppColors.primaryBlue,
+              offset: Offset(4, 4),
+              blurRadius: 8,
+              spreadRadius: 1,
             ),
+          ], 
+        
+          border: Border.all(
+            color: AppColors.white,
+            width: 2,
           ),
-          const SizedBox(width: 12.0),
-          // The text content is in an Expanded Column to fill the remaining space
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min, // So column doesn't stretch infinitely
-              children: [
-                // Title Text
-                Text(
-                  title,
-                  style: GoogleFonts.inter( // Using GoogleFonts like your button example
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+          
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+                        
+            // Icon
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Image.asset(
+                  iconPath,
+                  width: 38,
+                  height: 40,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(
+                      Icons.drive_eta,
+                      color: AppColors.primaryBlue,
+                      size: 32,
+                    );
+                  },
                 ),
-                const SizedBox(height: 4.0),
-                // Description Text
-                Text(
-                  description,
-                  style: GoogleFonts.inter(
-                    fontSize: 14.0,
-                    color: Colors.black54,
-                    height: 1.4, // Line height for better readability
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+            
+            // Text content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textPrimary,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
