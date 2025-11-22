@@ -1,7 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 
 class ProvisionalExamPage extends StatelessWidget {
-  const ProvisionalExamPage({Key? key}) : super(key: key);
+  const ProvisionalExamPage({super.key});
 
   @override
   Widget build(BuildContext context) {
