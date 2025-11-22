@@ -36,6 +36,16 @@ class _LoginState extends State<Login> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logged in successfully. Welcome back!')),
+      );
+    } on EmailNotVerifiedException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       final message = e.message ?? 'Login failed';
@@ -52,10 +62,17 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void _navigateToSignup() {
-    Navigator.of(context).pushReplacement(
+  Future<void> _navigateToSignup() async {
+    final result = await Navigator.of(context).push<String>(
       MaterialPageRoute(builder: (_) => const Signup()),
     );
+
+    if (!mounted) return;
+    if (result != null && result.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result)),
+      );
+    }
   }
 
   @override

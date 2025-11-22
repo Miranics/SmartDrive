@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smartdrive/config/runtime_env.dart';
 import 'package:smartdrive/firebase_options.dart';
 import 'package:smartdrive/screens/homepage.dart';
@@ -10,6 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _loadEnvFile();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await Supabase.initialize(
@@ -18,6 +20,14 @@ Future<void> main() async {
   );
 
   runApp(const MyApp());
+}
+
+Future<void> _loadEnvFile() async {
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (error) {
+    debugPrint('Runtime env file not loaded: $error');
+  }
 }
 
 class MyApp extends StatelessWidget {

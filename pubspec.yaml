@@ -40,6 +40,7 @@ dependencies:
   cloud_firestore: ^5.4.4
   supabase_flutter: ^2.6.0
   file_picker: ^8.1.2
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,7 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
+    - .env
     - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see

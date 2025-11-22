@@ -1,5 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+class EmailNotVerifiedException implements Exception {
+  const EmailNotVerifiedException([this.message]);
+  final String? message;
+
+  @override
+  String toString() => message ?? 'Email is not verified yet';
+}
+
 class AuthService {
   AuthService._();
 
@@ -23,6 +31,8 @@ class AuthService {
       await credential.user?.updateDisplayName(displayName);
     }
 
+    await credential.user?.sendEmailVerification();
+
     return credential;
   }
 
@@ -30,7 +40,24 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    return _auth.signInWithEmailAndPassword(email: email, password: password);
+    final credential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    final user = credential.user;
+    await user?.reload();
+    final isVerified = user?.emailVerified ?? false;
+
+    if (!isVerified) {
+      await user?.sendEmailVerification();
+      await _auth.signOut();
+      throw EmailNotVerifiedException(
+        'Please verify your email. We just sent a confirmation link to $email.',
+      );
+    }
+
+    return credential;
   }
 
   static Future<void> signOut() => _auth.signOut();
