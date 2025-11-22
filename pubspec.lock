@@ -214,6 +214,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -226,10 +234,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
-      sha256: "306f0596590e077338312f38837f595c04f28d6cdeeac392d3d74df2f0003687"
+      sha256: ee8068e0e1cd16c4a82714119918efdeed33b3ba7772c54b5d094ab53f9b7fd1
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.32"
+    version: "2.0.33"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -276,10 +284,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: bb2ce4590bc2667c96f318d68cac1b5a7987ec819351d32b1c987239a815e007
+      sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
       url: "https://pub.dev"
     source: hosted
-    version: "1.5.0"
+    version: "1.6.0"
   http_parser:
     dependency: transitive
     description:
@@ -368,6 +376,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  objective_c:
+    dependency: transitive
+    description:
+      name: objective_c
+      sha256: "1f81ed9e41909d44162d7ec8663b2c647c202317cc0b56d3d56f6a13146a0b64"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.1.0"
   path:
     dependency: transitive
     description:
@@ -388,18 +404,18 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: e122c5ea805bb6773bb12ce667611265980940145be920cd09a4b0ec0285cb16
+      sha256: f2c65e21139ce2c3dad46922be8272bb5963516045659e71bb16e151c93b580e
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.20"
+    version: "2.2.22"
   path_provider_foundation:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: efaec349ddfc181528345c56f8eda9d6cccd71c177511b132c6a0ddaefaa2738
+      sha256: "6192e477f34018ef1ea790c56fffc7302e3bc3efede9e798b934c252c8c105ba"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.3"
+    version: "2.5.0"
   path_provider_linux:
     dependency: transitive
     description:
@@ -448,6 +464,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.0"
+  pub_semver:
+    dependency: transitive
+    description:
+      name: pub_semver
+      sha256: "5bfcf68ca79ef689f8990d1160781b4bad40a3bd5e5218ad4076ddb7f4081585"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   realtime_client:
     dependency: transitive
     description:
@@ -484,10 +508,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: "07d552dbe8e71ed720e5205e760438ff4ecfb76ec3b32ea664350e2ca4b0c43b"
+      sha256: "46a46fd64659eff15f4638bbe19de43f9483f0e0bf024a9fb6b3582064bacc7b"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.16"
+    version: "2.4.17"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -625,10 +649,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: dff5e50339bf30b06d7950b50fda58164d3d8c40042b104ed041ddc520fbff28
+      sha256: "767344bf3063897b5cf0db830e94f904528e6dd50a6dfaf839f0abf509009611"
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.25"
+    version: "6.3.28"
   url_launcher_ios:
     dependency: transitive
     description:
