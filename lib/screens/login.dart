@@ -62,10 +62,17 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void _navigateToSignup() {
-    Navigator.of(context).pushReplacement(
+  Future<void> _navigateToSignup() async {
+    final result = await Navigator.of(context).push<String>(
       MaterialPageRoute(builder: (_) => const Signup()),
     );
+
+    if (!mounted) return;
+    if (result != null && result.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result)),
+      );
+    }
   }
 
   @override

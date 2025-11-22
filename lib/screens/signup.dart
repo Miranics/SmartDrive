@@ -36,24 +36,18 @@ class _SignupState extends State<Signup> {
 
     setState(() => _isSubmitting = true);
     try {
+      final email = _emailController.text.trim();
       await AuthService.signUp(
-        email: _emailController.text.trim(),
+        email: email,
         password: _passwordController.text.trim(),
         displayName: _nameController.text.trim(),
       );
 
+      await AuthService.signOut();
+
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Account created! We sent a verification link to ${_emailController.text.trim()}. Please confirm before logging in.',
-          ),
-          duration: const Duration(seconds: 6),
-        ),
-      );
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const Login()),
-        (route) => false,
+      Navigator.of(context).pop(
+        'Account created! We sent a verification link to $email. Please confirm your email before logging in.',
       );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
@@ -72,6 +66,11 @@ class _SignupState extends State<Signup> {
   }
 
   void _navigateToLogin() {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+      return;
+    }
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const Login()),
     );
