@@ -6,6 +6,7 @@ class RuntimeEnv {
   static String? _supabaseUrlOverride;
   static String? _supabaseAnonOverride;
   static String? _supabaseBucketOverride;
+  static String? _emailRedirectOverride;
 
   static String get supabaseUrl =>
       _supabaseUrlOverride ?? _fromDotEnv('SUPABASE_URL') ?? _require('SUPABASE_URL', _supabaseUrl);
@@ -14,6 +15,12 @@ class RuntimeEnv {
   static String get supabaseStorageBucket =>
       _supabaseBucketOverride ?? _fromDotEnv('SUPABASE_STORAGE_BUCKET') ??
       const String.fromEnvironment('SUPABASE_STORAGE_BUCKET', defaultValue: 'smartdrive-files');
+  static String get emailVerificationRedirectUrl =>
+      _emailRedirectOverride ?? _fromDotEnv('FIREBASE_EMAIL_REDIRECT_URL') ??
+      const String.fromEnvironment(
+        'FIREBASE_EMAIL_REDIRECT_URL',
+        defaultValue: 'https://smartdrive-dc55d.firebaseapp.com',
+      );
 
   static const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: '');
   static const String _supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: '');
@@ -39,9 +46,11 @@ class RuntimeEnv {
     String? supabaseUrl,
     String? supabaseAnonKey,
     String? supabaseStorageBucket,
+    String? emailRedirectUrl,
   }) {
     _supabaseUrlOverride = supabaseUrl;
     _supabaseAnonOverride = supabaseAnonKey;
     _supabaseBucketOverride = supabaseStorageBucket;
+    _emailRedirectOverride = emailRedirectUrl;
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:smartdrive/widgets/button_component.dart';
-import 'package:smartdrive/widgets/storage_upload_card.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -51,8 +50,6 @@ class Homepage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: GoogleFonts.montserrat(fontSize: 16, height: 1.5, color: Colors.black87),
               ),
-              const SizedBox(height: 30),
-              const StorageUploadCard(),
               const SizedBox(height: 30),
               ButtonComponent(
                 text: 'Start Now',
