@@ -43,8 +43,6 @@ class _SignupState extends State<Signup> {
         displayName: _nameController.text.trim(),
       );
 
-      await AuthService.signOut();
-
       if (!mounted) return;
       Navigator.of(context).pop(
         'Account created! We sent a verification link to $email. Please confirm your email before logging in.',
