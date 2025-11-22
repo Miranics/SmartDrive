@@ -36,16 +36,26 @@ class _LoginState extends State<Login> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      await AuthService.reloadCurrentUser();
+      final user = AuthService.currentUser;
+      final isVerified = user?.emailVerified ?? false;
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Logged in successfully. Welcome back!')),
-      );
-    } on EmailNotVerifiedException catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      if (isVerified) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Logged in successfully. Welcome back!')),
+        );
+      } else {
+        await AuthService.sendVerificationEmail();
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Verification link sent to ${user?.email ?? 'your email'}. Open it, confirm, then tap "I verified" on the next screen.',
+            ),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       final message = e.message ?? 'Login failed';

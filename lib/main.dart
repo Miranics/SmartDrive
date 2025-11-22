@@ -6,6 +6,7 @@ import 'package:smartdrive/config/runtime_env.dart';
 import 'package:smartdrive/firebase_options.dart';
 import 'package:smartdrive/screens/homepage.dart';
 import 'package:smartdrive/screens/login.dart';
+import 'package:smartdrive/screens/verify_email.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
@@ -60,7 +61,18 @@ class AuthGate extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        if (snapshot.hasData) {
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Authentication error: ${snapshot.error}'),
+            ),
+          );
+        }
+        final user = snapshot.data;
+        if (user != null) {
+          if (!user.emailVerified) {
+            return VerifyEmailScreen(user: user);
+          }
           return const Homepage();
         }
         return const Login();
