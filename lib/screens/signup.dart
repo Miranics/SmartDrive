@@ -44,7 +44,12 @@ class _SignupState extends State<Signup> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully!')),
+        SnackBar(
+          content: Text(
+            'Account created! We sent a verification link to ${_emailController.text.trim()}. Please confirm before logging in.',
+          ),
+          duration: const Duration(seconds: 6),
+        ),
       );
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const Login()),
