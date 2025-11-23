@@ -233,8 +233,11 @@ class ProgressScreen extends StatelessWidget {
                                   child: CircularProgressIndicator(
                                     value: 0.87,
                                     strokeWidth: 8,
-                                    backgroundColor: Colors.white.withOpacity(0.3),
-                                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                                    backgroundColor:
+                                        Colors.white.withOpacity(0.3),
+                                    valueColor:
+                                        const AlwaysStoppedAnimation<Color>(
+                                            Colors.white),
                                   ),
                                 ),
                               ),

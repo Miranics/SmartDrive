@@ -43,7 +43,8 @@ class _LoginState extends State<Login> {
       if (!mounted) return;
       if (isVerified) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logged in successfully. Welcome back!')),
+          const SnackBar(
+              content: Text('Logged in successfully. Welcome back!')),
         );
       } else {
         await AuthService.sendVerificationEmail();
@@ -59,7 +60,8 @@ class _LoginState extends State<Login> {
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       final message = e.message ?? 'Login failed';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -73,10 +75,7 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _navigateToSignup() async {
-    final result = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const Signup()),
-    );
-
+    final result = await Navigator.of(context).pushNamed<String>('/signup');
     if (!mounted) return;
     if (result != null && result.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -166,7 +165,8 @@ class _LoginState extends State<Login> {
                     TextButton(
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Password reset coming soon.')),
+                          const SnackBar(
+                              content: Text('Password reset coming soon.')),
                         );
                       },
                       child: const Text('Forgot Password?'),
