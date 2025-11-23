@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:smartdrive/widgets/button_component.dart';
 import 'package:smartdrive/widgets/page_header.dart';
-import 'package:smartdrive/widgets/contact_us_card.dart';
+import 'package:smartdrive/widgets/contact_us_card.dart'; 
 import 'package:smartdrive/constants/app_colors.dart';
 
 class FlashcardPage extends StatefulWidget {
-  const FlashcardPage({Key? key}) : super(key: key);
+  // Fixed: Use super.key for cleaner code
+  const FlashcardPage({super.key});
 
   @override
   State<FlashcardPage> createState() => _FlashcardPageState();
@@ -14,13 +17,11 @@ class _FlashcardPageState extends State<FlashcardPage> {
   bool _showAnswer = false;
   int _currentIndex = 0;
 
-  // Sample flashcard data
   final List<Map<String, String>> _flashcards = [
     {
       'question': 'What does this traffic sign mean?',
       'answer': 'No Entry - This sign prohibits vehicles from entering a road or area.',
     },
-    // Add more flashcards as needed
   ];
 
   void _toggleAnswer() {
@@ -55,19 +56,17 @@ class _FlashcardPageState extends State<FlashcardPage> {
       backgroundColor: AppColors.white,
       body: Column(
         children: [
-          // Scrollable content
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Page Header
                   PageHeader(
                     title: 'Flashcards',
                     subtitle: 'Traffic signs and rules',
                     onBackPressed: () => Navigator.of(context).pop(),
                   ),
                   const SizedBox(height: 32),
-                  // Flashcard Content
+                  
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
@@ -78,7 +77,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            // Fixed: Replace withOpacity with withValues(alpha: ...)
+                            color: Colors.black.withValues(alpha: 0.1),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -86,7 +86,6 @@ class _FlashcardPageState extends State<FlashcardPage> {
                       ),
                       child: Column(
                         children: [
-                          // Traffic Sign Image
                           Container(
                             width: 200,
                             height: 200,
@@ -110,10 +109,11 @@ class _FlashcardPageState extends State<FlashcardPage> {
                             ),
                           ),
                           const SizedBox(height: 32),
-                          // Question
+                          
                           Text(
                             currentCard['question']!,
-                            style: const TextStyle(
+                            // Fixed: Added GoogleFonts style or kept standard
+                            style: GoogleFonts.inter(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: Colors.black87,
@@ -121,7 +121,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 24),
-                          // Answer (shown when _showAnswer is true)
+                          
                           if (_showAnswer) ...[
                             Container(
                               width: double.infinity,
@@ -132,7 +132,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
                               ),
                               child: Text(
                                 currentCard['answer']!,
-                                style: const TextStyle(
+                                style: GoogleFonts.inter(
                                   fontSize: 16,
                                   color: Colors.black87,
                                 ),
@@ -141,87 +141,40 @@ class _FlashcardPageState extends State<FlashcardPage> {
                             ),
                             const SizedBox(height: 24),
                           ],
-                          // Show Answer Button
-                          SizedBox(
+
+                          ButtonComponent(
+                            text: _showAnswer ? 'Hide Answer' : 'Show Answer',
+                            type: ButtonType.primary,
+                            onPressed: _toggleAnswer,
                             width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: _toggleAnswer,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryBlue,
-                                foregroundColor: AppColors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                  horizontal: 32,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: Text(
-                                _showAnswer ? 'Hide Answer' : 'Show Answer',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
                   const SizedBox(height: 32),
-                  // Navigation Buttons
+                  
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
-                        // Previous Button
                         Expanded(
-                          child: OutlinedButton(
+                          child: ButtonComponent(
+                            text: 'Previous',
+                            type: ButtonType.outlined,
                             onPressed: _currentIndex > 0 ? _previousCard : null,
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.primaryBlue,
-                              side: const BorderSide(
-                                color: AppColors.primaryBlue,
-                                width: 2,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              'Previous',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            width: double.infinity,
                           ),
                         ),
                         const SizedBox(width: 16),
-                        // Next Button
                         Expanded(
-                          child: ElevatedButton(
+                          child: ButtonComponent(
+                            text: 'Next',
+                            type: ButtonType.secondary,
                             onPressed: _currentIndex < _flashcards.length - 1
                                 ? _nextCard
                                 : null,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryBlue,
-                              foregroundColor: AppColors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              'Next',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            width: double.infinity,
                           ),
                         ),
                       ],
@@ -232,8 +185,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
               ),
             ),
           ),
-          // Contact Us Footer
-          ContactUsCard(),
+          // Fixed: Changed 'ContactFooter' to 'ContactUsCard' to match your import.
+          const ContactUsCard(),
         ],
       ),
     );
