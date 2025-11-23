@@ -13,7 +13,7 @@ class ButtonComponent extends StatelessWidget {
   final OutlinedBorder? shape;
   final EdgeInsets? margin;
   final bool isLoading;
-  
+
   const ButtonComponent({
     super.key,
     required this.text,

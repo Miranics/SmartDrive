@@ -158,13 +158,19 @@ class ProvisionalExamPage extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: _buildFeatureCard(
-                          context,
-                          Icons.assignment_outlined,
-                          'Mock tests',
-                          'Full-length practice',
-                          Colors.indigo[50]!,
-                          Colors.indigo,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/mock_test_intro');
+                          },
+                          child: _buildFeatureCard(
+                            context,
+                            Icons.assignment_outlined,
+                            'Mock tests',
+                            'Full-length practice',
+                            Colors.indigo[50]!,
+                            Colors.indigo,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),
