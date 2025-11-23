@@ -33,11 +33,13 @@ class ProvisionalExamPage extends StatelessWidget {
                   children: [
                     // AppBar section
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 8),
                       child: Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            icon: const Icon(Icons.arrow_back,
+                                color: Colors.white),
                             onPressed: () => Navigator.of(context).pop(),
                           ),
                           const Text(
@@ -107,7 +109,8 @@ class ProvisionalExamPage extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   foregroundColor: const Color(0xFF0066FF),
                   side: const BorderSide(color: Color(0xFF0066FF)),
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -134,13 +137,19 @@ class ProvisionalExamPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: _buildFeatureCard(
-                          context,
-                          Icons.quiz_outlined,
-                          'Practice Quiz',
-                          'Test your knowledge',
-                          Colors.blue[50]!,
-                          Colors.blue,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/quiz');
+                          },
+                          child: _buildFeatureCard(
+                            context,
+                            Icons.quiz_outlined,
+                            'Practice Quiz',
+                            'Test your knowledge',
+                            Colors.blue[50]!,
+                            Colors.blue,
+                          ),
                         ),
                       ),
                     ],
@@ -160,13 +169,19 @@ class ProvisionalExamPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: _buildFeatureCard(
-                          context,
-                          Icons.trending_up_outlined,
-                          'Progress',
-                          'Track improvement',
-                          Colors.green[50]!,
-                          Colors.green,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/progress');
+                          },
+                          child: _buildFeatureCard(
+                            context,
+                            Icons.trending_up_outlined,
+                            'Progress',
+                            'Track improvement',
+                            Colors.green[50]!,
+                            Colors.green,
+                          ),
                         ),
                       ),
                     ],
@@ -203,7 +218,8 @@ class ProvisionalExamPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildContactRow(Icons.email_outlined, 'smartdrive@gmail.com'),
+                  _buildContactRow(
+                      Icons.email_outlined, 'smartdrive@gmail.com'),
                   const SizedBox(height: 8),
                   _buildContactRow(Icons.phone_outlined, '+250 785 456 678'),
                 ],
@@ -216,7 +232,8 @@ class ProvisionalExamPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(String value, String label, Color bgColor, Color textColor) {
+  Widget _buildStatCard(
+      String value, String label, Color bgColor, Color textColor) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(

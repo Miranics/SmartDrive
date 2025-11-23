@@ -21,7 +21,7 @@ class PracticalTipsPage extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          
+
           // Scrollable content
           Expanded(
             child: SingleChildScrollView(
@@ -30,7 +30,8 @@ class PracticalTipsPage extends StatelessWidget {
                 children: [
                   TipsCard(
                     title: 'Cones Exam',
-                    description: 'This first part of the practical driving exam is simple, but requires keen attention to surroundings.',
+                    description:
+                        'This first part of the practical driving exam is simple, but requires keen attention to surroundings.',
                     iconPath: 'assets/icons/cones.png',
                     onTap: () {
                       Navigator.push(
@@ -50,10 +51,10 @@ class PracticalTipsPage extends StatelessWidget {
                       );
                     },
                   ),
-                  
                   TipsCard(
                     title: 'Parallel Parking Exam',
-                    description: 'Practice this maneuver early to gain confidence. Remember the key points and take your time, however it has a 2 minute time limit.',
+                    description:
+                        'Practice this maneuver early to gain confidence. Remember the key points and take your time, however it has a 2 minute time limit.',
                     iconPath: 'assets/icons/parking.png',
                     onTap: () {
                       Navigator.push(
@@ -73,10 +74,10 @@ class PracticalTipsPage extends StatelessWidget {
                       );
                     },
                   ),
-                  
                   TipsCard(
                     title: 'Circulation Exam',
-                    description: 'Time to hit the road! You must remain calm and follow what the instructor tells you to do, but watch out for the trick questions!',
+                    description:
+                        'Time to hit the road! You must remain calm and follow what the instructor tells you to do, but watch out for the trick questions!',
                     iconPath: 'assets/icons/circulation.png',
                     onTap: () {
                       Navigator.push(
@@ -97,10 +98,10 @@ class PracticalTipsPage extends StatelessWidget {
                       );
                     },
                   ),
-                  
                   TipsCard(
                     title: 'T - Cross Exam',
-                    description: 'Always check your mirrors and blind spots, and don\'t forget to signal. Take your time, but be aware of the traffic while reversing.',
+                    description:
+                        'Always check your mirrors and blind spots, and don\'t forget to signal. Take your time, but be aware of the traffic while reversing.',
                     iconPath: 'assets/icons/t_cross.png',
                     onTap: () {
                       Navigator.push(
@@ -121,10 +122,10 @@ class PracticalTipsPage extends StatelessWidget {
                       );
                     },
                   ),
-                  
                   TipsCard(
                     title: 'Demerage Exam',
-                    description: 'The final part of the exam where your control of the car is tested on a steep hill. Remain calm, listen to the car and the instructors signal.',
+                    description:
+                        'The final part of the exam where your control of the car is tested on a steep hill. Remain calm, listen to the car and the instructors signal.',
                     iconPath: 'assets/icons/demerage.png',
                     onTap: () {
                       Navigator.push(
@@ -145,13 +146,12 @@ class PracticalTipsPage extends StatelessWidget {
                       );
                     },
                   ),
-                  
                   const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
-          
+
           // Contact Us Card at bottom
           const ContactUsCard(),
         ],
