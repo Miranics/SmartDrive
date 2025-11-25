@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartdrive/constants/app_colors.dart';
-
+import 'package:smartdrive/utils/theme_helper.dart';
 
 class ContactUsCard extends StatelessWidget {
   const ContactUsCard({super.key});
@@ -11,8 +11,15 @@ class ContactUsCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       decoration: BoxDecoration(
-            gradient: AppColors.getPrimaryBlueGradient(),
-            ),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            ThemeHelper.getHeaderGradientStart(context),
+            ThemeHelper.getHeaderGradientEnd(context),
+          ],
+        ),
+      ),
       child: SafeArea(
         top: false,
         child: Column(

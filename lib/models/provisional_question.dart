@@ -6,6 +6,7 @@ class ProvisionalQuestion {
     required this.correctAnswer,
     this.locale = 'en',
     this.orderIndex,
+    this.category,
   });
 
   final String id;
@@ -14,6 +15,7 @@ class ProvisionalQuestion {
   final String correctAnswer;
   final String locale;
   final int? orderIndex;
+  final String? category;
 
   factory ProvisionalQuestion.fromMap(Map<String, dynamic> map, String id) {
     final optionsRaw = map['options'] as Map<String, dynamic>? ?? {};
@@ -26,6 +28,7 @@ class ProvisionalQuestion {
       correctAnswer: map['correct_answer'] as String? ?? '',
       locale: map['locale'] as String? ?? 'en',
       orderIndex: (map['order_index'] as num?)?.toInt(),
+      category: map['category'] as String?,
     );
   }
 
@@ -36,6 +39,7 @@ class ProvisionalQuestion {
       'correct_answer': correctAnswer,
       'locale': locale,
       if (orderIndex != null) 'order_index': orderIndex,
+      if (category != null) 'category': category,
     };
   }
 

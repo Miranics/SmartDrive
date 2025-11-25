@@ -52,14 +52,30 @@ class ProvisionalExamService {
     required String uid,
     required int totalQuestions,
     required int correctAnswers,
+    Map<String, Map<String, int>>? categoryBreakdown,
   }) async {
+    final updates = <String, dynamic>{
+      'testsTaken': FieldValue.increment(1),
+      'questionsAnswered': FieldValue.increment(totalQuestions),
+      'correctAnswers': FieldValue.increment(correctAnswers),
+      'lastTakenAt': FieldValue.serverTimestamp(),
+    };
+
+    // Update category stats if provided
+    if (categoryBreakdown != null) {
+      categoryBreakdown.forEach((category, stats) {
+        final questionsAnswered = stats['questionsAnswered'] ?? 0;
+        final correct = stats['correctAnswers'] ?? 0;
+        
+        updates['categoryStats.$category.questionsAnswered'] = 
+            FieldValue.increment(questionsAnswered);
+        updates['categoryStats.$category.correctAnswers'] = 
+            FieldValue.increment(correct);
+      });
+    }
+
     await _userStatsCollection.doc(uid).set(
-      {
-        'testsTaken': FieldValue.increment(1),
-        'questionsAnswered': FieldValue.increment(totalQuestions),
-        'correctAnswers': FieldValue.increment(correctAnswers),
-        'lastTakenAt': FieldValue.serverTimestamp(),
-      },
+      updates,
       SetOptions(merge: true),
     );
   }

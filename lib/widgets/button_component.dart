@@ -61,11 +61,11 @@ class ButtonComponent extends StatelessWidget {
       case ButtonType.primary:
         return EdgeInsets.symmetric(horizontal: 40, vertical: 10);
       case ButtonType.secondary:
-        return EdgeInsets.symmetric(horizontal: 48, vertical: 23);
+        return EdgeInsets.symmetric(horizontal: 24, vertical: 16);
       case ButtonType.small:
-        return EdgeInsets.symmetric(horizontal: 65, vertical: 22);
+        return EdgeInsets.symmetric(horizontal: 24, vertical: 16);
       case ButtonType.outlined:
-        return EdgeInsets.symmetric(horizontal: 65, vertical: 22);
+        return EdgeInsets.symmetric(horizontal: 24, vertical: 16);
     }
   }
 
@@ -74,11 +74,11 @@ class ButtonComponent extends StatelessWidget {
       case ButtonType.primary:
         return 25;
       case ButtonType.secondary:
-        return 22;
+        return 16;
       case ButtonType.small:
-        return 22;
+        return 16;
       case ButtonType.outlined:
-        return 24;
+        return 16;
     }
   }
 
@@ -151,12 +151,15 @@ class ButtonComponent extends StatelessWidget {
                     valueColor: AlwaysStoppedAnimation<Color>(_getTextColor()),
                   ),
                 )
-              : Text(
-                  text,
-                  style: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.w500,
-                    fontSize: _getFontSize(),
-                    color: _getTextColor(),
+              : FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    text,
+                    style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.w500,
+                      fontSize: _getFontSize(),
+                      color: _getTextColor(),
+                    ),
                   ),
                 ),
         ),

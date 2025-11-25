@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// A reusable progress card component for SmartDrive
-/// Displays category progress with animated progress bar
 class ProgressCard extends StatelessWidget {
   final String title;
   final int currentProgress;
@@ -19,7 +17,6 @@ class ProgressCard extends StatelessWidget {
   }) : assert(currentProgress >= 0 && currentProgress <= totalProgress,
             'currentProgress must be between 0 and totalProgress');
 
-  /// Calculate percentage (0-100)
   int get percentage => totalProgress > 0 
       ? ((currentProgress / totalProgress) * 100).round() 
       : 0;
@@ -30,7 +27,9 @@ class ProgressCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color(0xFF1A1A2E)
+            : Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -43,16 +42,15 @@ class ProgressCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title and Percentage Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1A1A1A),
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
               Text(
@@ -66,8 +64,6 @@ class ProgressCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          
-          // Progress Bar
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: SizedBox(
@@ -82,13 +78,11 @@ class ProgressCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          
-          // Progress Text
           Text(
             '$currentProgress/$totalProgress questions mastered',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
-              color: Color(0xFF8E8E93),
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xFF8E8E93),
             ),
           ),
         ],
@@ -97,7 +91,6 @@ class ProgressCard extends StatelessWidget {
   }
 }
 
-/// Example usage of the ProgressCard component
 class ProgressCardExample extends StatelessWidget {
   const ProgressCardExample({super.key});
 
