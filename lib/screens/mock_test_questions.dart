@@ -23,23 +23,6 @@ final selectedAnswersProvider = StateProvider<Map<int, String>>((ref) => {});
 final secondsRemainingProvider = StateProvider<int>((ref) => 1200); // 20 minutes
 final timeUpProvider = StateProvider<bool>((ref) => false);
 
-// Timer provider
-final timerProvider = Provider.autoDispose<void>((ref) {
-  final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-    final secondsRemaining = ref.read(secondsRemainingProvider);
-    if (secondsRemaining > 0) {
-      ref.read(secondsRemainingProvider.notifier).state = secondsRemaining - 1;
-    } else {
-      ref.read(timeUpProvider.notifier).state = true;
-      timer.cancel();
-    }
-  });
-
-  ref.onDispose(() {
-    timer.cancel();
-  });
-});
-
 class MockTestQuestionsPage extends ConsumerStatefulWidget {
   const MockTestQuestionsPage({super.key});
 
@@ -49,12 +32,34 @@ class MockTestQuestionsPage extends ConsumerStatefulWidget {
 
 class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
   bool _dialogShown = false;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    // Initialize the timer
-    Future.microtask(() => ref.read(timerProvider));
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      final secondsRemaining = ref.read(secondsRemainingProvider);
+      if (secondsRemaining > 0) {
+        ref.read(secondsRemainingProvider.notifier).state = secondsRemaining - 1;
+      } else {
+        ref.read(timeUpProvider.notifier).state = true;
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   String _formatTime(int seconds) {
@@ -252,28 +257,13 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
           );
         }
 
-        // Show time up dialog once
+        // Auto-submit when time runs out
         if (timeUp && !_dialogShown) {
           _dialogShown = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) => AlertDialog(
-                title: const Text('Time\'s Up!'),
-                content: const Text(
-                  'Your time has run out. Please submit your test now.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-            );
+            if (mounted) {
+              _submitTest(questions);
+            }
           });
         }
 
@@ -315,35 +305,69 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                     color: AppColors.white,
                     child: Column(
                       children: [
-                        // Timer
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: timeUp ? AppColors.red : AppColors.primaryBlue,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.timer_outlined,
-                                color: AppColors.white,
-                                size: 20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Quit Button
+                            IconButton(
+                              onPressed: () async {
+                                final shouldQuit = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Quit Test?'),
+                                    content: const Text(
+                                      'Are you sure you want to quit? Your progress will be lost.',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context, false),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context, true),
+                                        child: const Text('Quit'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                if (shouldQuit == true && mounted) {
+                                  Navigator.pop(context);
+                                }
+                              },
+                              icon: const Icon(Icons.close, color: AppColors.red),
+                            ),
+                            // Timer
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                _formatTime(secondsRemaining),
-                                style: const TextStyle(
-                                  color: AppColors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              decoration: BoxDecoration(
+                                color: secondsRemaining <= 180 ? AppColors.red : AppColors.primaryBlue,
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                            ],
-                          ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.timer_outlined,
+                                    color: AppColors.white,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _formatTime(secondsRemaining),
+                                    style: const TextStyle(
+                                      color: AppColors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 48),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         
