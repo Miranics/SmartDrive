@@ -48,11 +48,11 @@ class Welcomepage extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 40),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  SizedBox(height: 40),
                   Container(
                     width: 150,
                     height: 150,

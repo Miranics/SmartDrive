@@ -184,18 +184,9 @@ class ProvisionalExamPage extends StatelessWidget {
             // Contact Us Section
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0066FF),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF000000).withOpacity(0.25),
-                    offset: const Offset(0, 4),
-                    blurRadius: 4,
-                  ),
-                ],
+              decoration: const BoxDecoration(
+                color: Color(0xFF0066FF),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

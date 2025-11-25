@@ -99,4 +99,4 @@ class AuthGate extends ConsumerWidget {
   }
 }
 
-// Old code removed below - AuthGate now uses Riverpod
+
