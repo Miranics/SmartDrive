@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "question": "Every vehicle or combination of vehicles proceeding must have:",
+    "options": {
+      "a": "A driver",
+      "b": "A convoy/guide",
+      "c": "A and B are correct answers",
+      "d": "No correct answer is included"
+    },
+    "correct_answer": "c",
+    "locale": "en",
+    "order_index": 1
+  },
+  {
+    "id": "2",
+    "question": "The term 'path' (akayira) means a narrow public way reserved only for:",
+    "options": {
+      "a": "Pedestrians",
+      "b": "Two-wheeled vehicles",
+      "c": "A and B are correct answers",
+      "d": "No correct answer is included"
+    },
+    "correct_answer": "c",
+    "locale": "en",
+    "order_index": 2
+  }
+]

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:smartdrive/widgets/button_component.dart';
-import 'package:smartdrive/widgets/storage_upload_card.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -43,22 +42,24 @@ class Homepage extends StatelessWidget {
               Text(
                 "At SmartDrive, we're dedicated to making your driving learning experience seamless and enjoyable.",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(fontSize: 16, height: 1.5, color: Colors.black87),
+                style: GoogleFonts.montserrat(
+                    fontSize: 16, height: 1.5, color: Colors.black87),
               ),
               const SizedBox(height: 20),
               Text(
                 'Practice for your provisional license with flashcards, quizzes, and mock tests, and get tips on the practical driving exam.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(fontSize: 16, height: 1.5, color: Colors.black87),
+                style: GoogleFonts.montserrat(
+                    fontSize: 16, height: 1.5, color: Colors.black87),
               ),
-              const SizedBox(height: 30),
-              const StorageUploadCard(),
               const SizedBox(height: 30),
               ButtonComponent(
                 text: 'Start Now',
                 backgroundColor: const Color(0xFF004299),
                 type: ButtonType.small,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/signup');
+                },
               ),
             ],
           ),

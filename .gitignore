@@ -54,3 +54,5 @@ app.*.map.json
 
 # Environment files
 .env
+scripts/serviceAccount.json
+node_modules/

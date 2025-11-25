@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartdrive/screens/signup.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:smartdrive/widgets/button_component.dart';
 import 'package:smartdrive/widgets/input.dart';
@@ -36,10 +35,32 @@ class _LoginState extends State<Login> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      await AuthService.reloadCurrentUser();
+      final user = AuthService.currentUser;
+      final isVerified = user?.emailVerified ?? false;
+
+      if (!mounted) return;
+      if (isVerified) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Logged in successfully. Welcome back!')),
+        );
+      } else {
+        await AuthService.sendVerificationEmail();
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Verification link sent to ${user?.email ?? 'your email'}. Open it, confirm, then tap "I verified" on the next screen.',
+            ),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       final message = e.message ?? 'Login failed';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -52,10 +73,14 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void _navigateToSignup() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const Signup()),
-    );
+  Future<void> _navigateToSignup() async {
+    final result = await Navigator.of(context).pushNamed<String>('/signup');
+    if (!mounted) return;
+    if (result != null && result.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result)),
+      );
+    }
   }
 
   @override
@@ -139,7 +164,8 @@ class _LoginState extends State<Login> {
                     TextButton(
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Password reset coming soon.')),
+                          const SnackBar(
+                              content: Text('Password reset coming soon.')),
                         );
                       },
                       child: const Text('Forgot Password?'),

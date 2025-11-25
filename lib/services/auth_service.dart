@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:smartdrive/config/runtime_env.dart';
 
 class AuthService {
   AuthService._();
 
   static FirebaseAuth get _auth => FirebaseAuth.instance;
 
-  static Stream<User?> get authChanges => _auth.authStateChanges();
+  static Stream<User?> get authChanges => _auth.userChanges();
 
   static User? get currentUser => _auth.currentUser;
 
@@ -23,6 +24,8 @@ class AuthService {
       await credential.user?.updateDisplayName(displayName);
     }
 
+    await _sendEmailVerification(credential.user);
+
     return credential;
   }
 
@@ -30,8 +33,42 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    return _auth.signInWithEmailAndPassword(email: email, password: password);
+    final credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+    await credential.user?.reload();
+    return credential;
   }
 
   static Future<void> signOut() => _auth.signOut();
+
+  static Future<void> sendVerificationEmail({bool force = false}) async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw StateError('Cannot send verification email without an authenticated user.');
+    }
+    if (user.emailVerified && !force) return;
+
+    final settings = _buildActionCodeSettings();
+    await user.sendEmailVerification(settings);
+  }
+
+  static Future<void> reloadCurrentUser() async {
+    await _auth.currentUser?.reload();
+  }
+
+  static Future<void> _sendEmailVerification(User? user) async {
+    if (user == null) return;
+    final settings = _buildActionCodeSettings();
+    await user.sendEmailVerification(settings);
+  }
+
+  static ActionCodeSettings _buildActionCodeSettings() {
+    return ActionCodeSettings(
+      url: RuntimeEnv.emailVerificationRedirectUrl,
+      handleCodeInApp: false,
+      androidPackageName: 'com.example.smartdrive',
+      androidInstallApp: true,
+      androidMinimumVersion: '21',
+      iOSBundleId: 'com.example.smartdrive',
+    );
+  }
 }

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartdrive/screens/login.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:smartdrive/widgets/button_component.dart';
 import 'package:smartdrive/widgets/input.dart';
@@ -36,24 +35,22 @@ class _SignupState extends State<Signup> {
 
     setState(() => _isSubmitting = true);
     try {
+      final email = _emailController.text.trim();
       await AuthService.signUp(
-        email: _emailController.text.trim(),
+        email: email,
         password: _passwordController.text.trim(),
         displayName: _nameController.text.trim(),
       );
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully!')),
-      );
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const Login()),
-        (route) => false,
+      Navigator.of(context).pop(
+        'Account created! We sent a verification link to $email. Please confirm your email before logging in.',
       );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       final message = e.message ?? 'Registration failed';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -67,9 +64,7 @@ class _SignupState extends State<Signup> {
   }
 
   void _navigateToLogin() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const Login()),
-    );
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
