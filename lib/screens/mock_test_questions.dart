@@ -124,20 +124,20 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
 
     return questionsAsync.when(
       loading: () => Scaffold(
-        backgroundColor: AppColors.white,
-        body: const Center(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(
+              const CircularProgressIndicator(
                 color: AppColors.primaryBlue,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'Loading questions...',
                 style: TextStyle(
                   fontSize: 16,
-                  color: AppColors.textPrimary,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
             ],
@@ -155,7 +155,7 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
         }
         
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: Center(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -168,20 +168,20 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                     size: 64,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'Failed to load questions',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     errorMessage,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -209,7 +209,7 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
       data: (questions) {
         if (questions.isEmpty) {
           return Scaffold(
-            backgroundColor: AppColors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -222,12 +222,12 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                       size: 64,
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'No questions available',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -305,14 +305,14 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
             return shouldPop ?? false;
           },
           child: Scaffold(
-            backgroundColor: AppColors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: SafeArea(
               child: Column(
                 children: [
                   // Timer and Progress Bar
                   Container(
                     padding: const EdgeInsets.all(16),
-                    color: AppColors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: Column(
                       children: [
                         // Timer
@@ -364,9 +364,9 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                         const SizedBox(height: 8),
                         Text(
                           'Question ${currentQuestionIndex + 1} of ${questions.length}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: AppColors.textPrimary,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                       ],
@@ -383,10 +383,10 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                           // Question
                           Text(
                             question.question,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
+                              color: Theme.of(context).textTheme.bodyLarge?.color,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -403,7 +403,9 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                                 decoration: BoxDecoration(
                                   color: isSelected 
                                       ? AppColors.lightBlue 
-                                      : AppColors.white,
+                                      : (Theme.of(context).brightness == Brightness.dark
+                                          ? const Color(0xFF1A1A2E)
+                                          : AppColors.white),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: isSelected 
@@ -416,7 +418,7 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                                   '${option.key}) ${option.value}',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: AppColors.textPrimary,
+                                    color: Theme.of(context).textTheme.bodyLarge?.color,
                                     fontWeight: isSelected 
                                         ? FontWeight.w600 
                                         : FontWeight.normal,
@@ -434,7 +436,7 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.05),

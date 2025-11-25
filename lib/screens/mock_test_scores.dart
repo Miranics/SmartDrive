@@ -28,7 +28,7 @@ class MockTestScoresPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           // Page Header
@@ -96,7 +96,9 @@ class MockTestScoresPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: AppColors.paleBlue,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF1A1A2E)
+                          : AppColors.paleBlue,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: AppColors.primaryBlue,
@@ -117,9 +119,9 @@ class MockTestScoresPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           'Your Score',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
-                            color: AppColors.textPrimary,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
