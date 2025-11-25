@@ -14,13 +14,6 @@ class Homepage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text('SmartDrive'),
-        actions: [
-          IconButton(
-            onPressed: AuthService.signOut,
-            icon: const Icon(Icons.logout_rounded),
-            tooltip: 'Sign out',
-          ),
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -42,20 +35,38 @@ class Homepage extends StatelessWidget {
               Text(
                 "At SmartDrive, we're dedicated to making your driving learning experience seamless and enjoyable.",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(fontSize: 16, height: 1.5, color: Colors.black87),
+                style: GoogleFonts.montserrat(
+                    fontSize: 16, height: 1.5, color: Colors.black87),
               ),
               const SizedBox(height: 20),
               Text(
                 'Practice for your provisional license with flashcards, quizzes, and mock tests, and get tips on the practical driving exam.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(fontSize: 16, height: 1.5, color: Colors.black87),
+                style: GoogleFonts.montserrat(
+                    fontSize: 16, height: 1.5, color: Colors.black87),
               ),
               const SizedBox(height: 30),
               ButtonComponent(
                 text: 'Start Now',
                 backgroundColor: const Color(0xFF004299),
                 type: ButtonType.small,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/signup');
+                },
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: Text(
+                  'Already have an account? Log in',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF004299),
+                  ),
+                ),
               ),
             ],
           ),

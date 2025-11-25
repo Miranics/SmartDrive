@@ -10,15 +10,14 @@ class ProgressCard extends StatelessWidget {
   final Color? backgroundColor;
 
   const ProgressCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.currentProgress,
     required this.totalProgress,
     this.progressColor,
     this.backgroundColor,
   }) : assert(currentProgress >= 0 && currentProgress <= totalProgress,
-            'currentProgress must be between 0 and totalProgress'),
-       super(key: key);
+            'currentProgress must be between 0 and totalProgress');
 
   /// Calculate percentage (0-100)
   int get percentage => totalProgress > 0 
@@ -100,7 +99,7 @@ class ProgressCard extends StatelessWidget {
 
 /// Example usage of the ProgressCard component
 class ProgressCardExample extends StatelessWidget {
-  const ProgressCardExample({Key? key}) : super(key: key);
+  const ProgressCardExample({super.key});
 
   @override
   Widget build(BuildContext context) {

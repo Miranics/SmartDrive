@@ -2,12 +2,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartdrive/config/runtime_env.dart';
+import 'package:smartdrive/core/theme/app_theme.dart';
+import 'package:smartdrive/core/router/route_guard.dart';
+import 'package:smartdrive/features/auth/presentation/providers/auth_providers.dart';
+import 'package:smartdrive/features/auth/presentation/pages/login_page.dart';
+import 'package:smartdrive/features/auth/presentation/pages/signup_page.dart';
 import 'package:smartdrive/firebase_options.dart';
 import 'package:smartdrive/screens/homepage.dart';
 import 'package:smartdrive/screens/login.dart';
+import 'package:smartdrive/screens/signup.dart';
+import 'package:smartdrive/screens/forgot_password.dart';
+import 'package:smartdrive/screens/WelcomePage.dart';
+import 'package:smartdrive/screens/tips_page.dart';
 import 'package:smartdrive/screens/verify_email.dart';
-import 'package:smartdrive/services/auth_service.dart';
+import 'package:smartdrive/screens/provisional_exam.dart';
+import 'package:smartdrive/screens/QuizPage.dart';
+import 'package:smartdrive/screens/progress_screen.dart';
+
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 Future<void> main() async {
@@ -20,7 +33,7 @@ Future<void> main() async {
     anonKey: RuntimeEnv.supabaseAnonKey,
   );
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 Future<void> _loadEnvFile() async {
@@ -31,52 +44,66 @@ Future<void> _loadEnvFile() async {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SmartDrive',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF004299)),
-        useMaterial3: true,
-      ),
-      home: const AuthGate(),
-    );
-  }
-}
-
-class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: AuthService.authChanges,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-        if (snapshot.hasError) {
-          return Scaffold(
-            body: Center(
-              child: Text('Authentication error: ${snapshot.error}'),
-            ),
-          );
-        }
-        final user = snapshot.data;
-        if (user != null) {
-          if (!user.emailVerified) {
-            return VerifyEmailScreen(user: user);
-          }
-          return const Homepage();
-        }
-        return const Login();
+      theme: AppTheme.lightTheme,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const AuthGate(),
+        '/homepage': (context) => const Homepage(),
+        '/login': (context) => const Login(),
+        '/signup': (context) => const Signup(),
+        '/forgot_password': (context) => const ForgotPasswordPage(),
+        '/welcome': (context) => RouteGuard(child: Welcomepage()),
+        '/provisional_exam': (context) =>
+            RouteGuard(child: ProvisionalExamPage()),
+        '/quiz': (context) => RouteGuard(child: Quizpage()),
+        '/progress': (context) => RouteGuard(child: ProgressScreen()),
+        '/tips': (context) => RouteGuard(child: PracticalTipsPage()),
       },
     );
   }
 }
+
+class AuthGate extends ConsumerWidget {
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+
+    return authState.when(
+      data: (userEntity) {
+        if (userEntity != null) {
+          if (!userEntity.emailVerified) {
+            // Temporary: Get Firebase User for VerifyEmailScreen
+            final firebaseUser = ref.read(firebaseAuthProvider).currentUser;
+            if (firebaseUser != null) {
+              return VerifyEmailScreen(user: firebaseUser);
+            }
+          }
+          // Authenticated and verified: show WelcomePage
+          return const Welcomepage();
+        }
+        // Not authenticated: show Homepage
+        return const Homepage();
+      },
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stack) => Scaffold(
+        body: Center(
+          child: Text('Authentication error: $error'),
+        ),
+      ),
+    );
+  }
+}
+
+// Old code removed below - AuthGate now uses Riverpod
