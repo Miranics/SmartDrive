@@ -1,70 +1,48 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartdrive/constants/app_colors.dart';
 import 'package:smartdrive/data/mock_test_data.dart';
 import 'package:smartdrive/screens/mock_test_scores.dart';
 
-class MockTestQuestionsPage extends StatefulWidget {
+// State providers
+final currentQuestionIndexProvider = StateProvider<int>((ref) => 0);
+final selectedAnswersProvider = StateProvider<Map<int, String>>((ref) => {});
+final secondsRemainingProvider = StateProvider<int>((ref) => 1200); // 20 minutes
+final timeUpProvider = StateProvider<bool>((ref) => false);
+
+// Timer provider
+final timerProvider = Provider.autoDispose<void>((ref) {
+  final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    final secondsRemaining = ref.read(secondsRemainingProvider);
+    if (secondsRemaining > 0) {
+      ref.read(secondsRemainingProvider.notifier).state = secondsRemaining - 1;
+    } else {
+      ref.read(timeUpProvider.notifier).state = true;
+      timer.cancel();
+    }
+  });
+
+  ref.onDispose(() {
+    timer.cancel();
+  });
+});
+
+class MockTestQuestionsPage extends ConsumerStatefulWidget {
   const MockTestQuestionsPage({super.key});
 
   @override
-  State<MockTestQuestionsPage> createState() => _MockTestQuestionsPageState();
+  ConsumerState<MockTestQuestionsPage> createState() => _MockTestQuestionsPageState();
 }
 
-class _MockTestQuestionsPageState extends State<MockTestQuestionsPage> {
-  int currentQuestionIndex = 0;
-  Map<int, String> selectedAnswers = {};
-  Timer? _timer;
-  int _secondsRemaining = 1200; // 20 minutes = 1200 seconds
-  bool _timeUp = false;
+class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
+  bool _dialogShown = false;
 
   @override
   void initState() {
     super.initState();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_secondsRemaining > 0) {
-        setState(() {
-          _secondsRemaining--;
-        });
-      } else {
-        setState(() {
-          _timeUp = true;
-        });
-        _timer?.cancel();
-        _showTimeUpDialog();
-      }
-    });
-  }
-
-  void _showTimeUpDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text('Time\'s Up!'),
-        content: const Text(
-          'Your time has run out. Please submit your test now.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
+    // Initialize the timer
+    Future.microtask(() => ref.read(timerProvider));
   }
 
   String _formatTime(int seconds) {
@@ -74,31 +52,34 @@ class _MockTestQuestionsPageState extends State<MockTestQuestionsPage> {
   }
 
   void _selectAnswer(String answer) {
-    if (!_timeUp) {
-      setState(() {
-        selectedAnswers[currentQuestionIndex] = answer;
-      });
+    final timeUp = ref.read(timeUpProvider);
+    if (!timeUp) {
+      final currentIndex = ref.read(currentQuestionIndexProvider);
+      final selectedAnswers = ref.read(selectedAnswersProvider);
+      ref.read(selectedAnswersProvider.notifier).state = {
+        ...selectedAnswers,
+        currentIndex: answer,
+      };
     }
   }
 
   void _nextQuestion() {
-    if (currentQuestionIndex < mockTestQuestions.length - 1) {
-      setState(() {
-        currentQuestionIndex++;
-      });
+    final currentIndex = ref.read(currentQuestionIndexProvider);
+    if (currentIndex < mockTestQuestions.length - 1) {
+      ref.read(currentQuestionIndexProvider.notifier).state = currentIndex + 1;
     }
   }
 
   void _previousQuestion() {
-    if (currentQuestionIndex > 0) {
-      setState(() {
-        currentQuestionIndex--;
-      });
+    final currentIndex = ref.read(currentQuestionIndexProvider);
+    if (currentIndex > 0) {
+      ref.read(currentQuestionIndexProvider.notifier).state = currentIndex - 1;
     }
   }
 
   void _submitTest() {
-    _timer?.cancel();
+    final selectedAnswers = ref.read(selectedAnswersProvider);
+    final secondsRemaining = ref.read(secondsRemainingProvider);
     
     // Calculate score
     int correctAnswers = 0;
@@ -114,7 +95,7 @@ class _MockTestQuestionsPageState extends State<MockTestQuestionsPage> {
         builder: (context) => MockTestScoresPage(
           correctAnswers: correctAnswers,
           totalQuestions: mockTestQuestions.length,
-          timeUsed: 1200 - _secondsRemaining,
+          timeUsed: 1200 - secondsRemaining,
         ),
       ),
     );
@@ -122,6 +103,36 @@ class _MockTestQuestionsPageState extends State<MockTestQuestionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentQuestionIndex = ref.watch(currentQuestionIndexProvider);
+    final selectedAnswers = ref.watch(selectedAnswersProvider);
+    final secondsRemaining = ref.watch(secondsRemainingProvider);
+    final timeUp = ref.watch(timeUpProvider);
+
+    // Show time up dialog once
+    if (timeUp && !_dialogShown) {
+      _dialogShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: const Text('Time\'s Up!'),
+            content: const Text(
+              'Your time has run out. Please submit your test now.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      });
+    }
+
     final question = mockTestQuestions[currentQuestionIndex];
     final progress = (currentQuestionIndex + 1) / mockTestQuestions.length;
 
@@ -140,10 +151,7 @@ class _MockTestQuestionsPageState extends State<MockTestQuestionsPage> {
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () {
-                  _timer?.cancel();
-                  Navigator.pop(context, true);
-                },
+                onPressed: () => Navigator.pop(context, true),
                 child: const Text('Exit'),
               ),
             ],
@@ -169,20 +177,20 @@ class _MockTestQuestionsPageState extends State<MockTestQuestionsPage> {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: _timeUp ? AppColors.red : AppColors.primaryBlue,
+                        color: timeUp ? AppColors.red : AppColors.primaryBlue,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.timer_outlined,
                             color: AppColors.white,
                             size: 20,
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            _formatTime(_secondsRemaining),
+                            _formatTime(secondsRemaining),
                             style: const TextStyle(
                               color: AppColors.white,
                               fontSize: 18,
@@ -243,7 +251,7 @@ class _MockTestQuestionsPageState extends State<MockTestQuestionsPage> {
                       ...question.options.map((option) {
                         final isSelected = selectedAnswers[currentQuestionIndex] == option;
                         return GestureDetector(
-                          onTap: _timeUp ? null : () => _selectAnswer(option),
+                          onTap: timeUp ? null : () => _selectAnswer(option),
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 16),
                             padding: const EdgeInsets.all(16),
