@@ -5,7 +5,8 @@ import 'package:smartdrive/utils/theme_helper.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:smartdrive/services/provisional_exam_service.dart';
 import 'package:smartdrive/services/preferences_service.dart';
-import 'package:smartdrive/models/user_exam_stats.dart' show UserExamStats, CategoryStats;
+import 'package:smartdrive/models/user_exam_stats.dart'
+    show UserExamStats, CategoryStats;
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({Key? key}) : super(key: key);
@@ -15,7 +16,6 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
-
   @override
   Widget build(BuildContext context) {
     final user = AuthService.currentUser;
@@ -23,604 +23,639 @@ class _ProgressScreenState extends State<ProgressScreen> {
       backgroundColor: ThemeHelper.getHeaderGradientStart(context),
       body: Column(
         children: [
-          PageHeader(
-            title: 'Progress',
-            subtitle: 'View your accomplishment here',
-            onBackPressed: () => Navigator.pop(context),
-          ),
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? const Color(0xFF16213E)
-                    : const Color(0xFFF2F2F7),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-              ),
-              child: ListView(
-                padding: EdgeInsets.zero,
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                  FutureBuilder<DateTime?>(
-                    future: PreferencesService.getExamDate(),
-                    builder: (context, snapshot) {
-                      final examDate = snapshot.data;
-                      final daysRemaining = examDate != null
-                          ? examDate.difference(DateTime.now()).inDays
-                          : null;
-                      
-                      return Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFFFF6B6B), Color(0xFFFF8E8E)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFFFF6B6B).withOpacity(0.3),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'EXAM IN',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              daysRemaining != null ? '$daysRemaining' : '--',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 48,
-                                fontWeight: FontWeight.bold,
-                                height: 1,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            const Text(
-                              'Days Remaining',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              daysRemaining != null
-                                  ? 'Time to prepare for your theory test!'
-                                  : 'Set your exam date in Provisional Exam page',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.9),
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                  PageHeader(
+                    title: 'Progress',
+                    subtitle: 'View your accomplishment here',
+                    onBackPressed: () => Navigator.pop(context),
                   ),
-                  const SizedBox(height: 16),
-                  if (user != null)
-                    StreamBuilder<UserExamStats?>(
-                      stream: ProvisionalExamService.streamUserStats(user.uid),
-                      builder: (context, snapshot) {
-                        final stats = snapshot.data;
-                        final avgScore = stats?.averageScore.toStringAsFixed(0) ?? '--';
-                        final quizTaken = stats?.testsTaken.toString() ?? '--';
-                        final questionsAnswered = stats?.questionsAnswered.toString() ?? '--';
-                        
-                        return Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _buildStatCard(
-                                    context,
-                                    icon: Icons.bar_chart_rounded,
-                                    value: '$avgScore%',
-                                    label: 'Average score',
-                                    color: const Color(0xFF007AFF),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _buildStatCard(
-                                    context,
-                                    icon: Icons.quiz_outlined,
-                                    value: quizTaken,
-                                    label: 'Quiz taken',
-                                    color: const Color(0xFF007AFF),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _buildStatCard(
-                                    context,
-                                    icon: Icons.help_outline_rounded,
-                                    value: questionsAnswered,
-                                    label: 'Questions Answered',
-                                    color: const Color(0xFF007AFF),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _buildStatCard(
-                                    context,
-                                    icon: Icons.emoji_events_outlined,
-                                    value: '$avgScore%',
-                                    label: 'Best Score',
-                                    color: const Color(0xFFFF3B30),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      },
-                    )
-                  else
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildStatCard(
-                                context,
-                                icon: Icons.bar_chart_rounded,
-                                value: '--',
-                                label: 'Average score',
-                                color: const Color(0xFF007AFF),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: _buildStatCard(
-                                context,
-                                icon: Icons.quiz_outlined,
-                                value: '--',
-                                label: 'Quiz taken',
-                                color: const Color(0xFF007AFF),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildStatCard(
-                                context,
-                                icon: Icons.help_outline_rounded,
-                                value: '--',
-                                label: 'Questions Answered',
-                                color: const Color(0xFF007AFF),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: _buildStatCard(
-                                context,
-                                icon: Icons.emoji_events_outlined,
-                                value: '--',
-                                label: 'Best Score',
-                                color: const Color(0xFFFF3B30),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF16213E)
+                          : const Color(0xFFF2F2F7),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                        topRight: Radius.circular(24),
+                      ),
                     ),
-                  const SizedBox(height: 16),
-                  if (user != null)
-                    StreamBuilder<UserExamStats?>(
-                      stream: ProvisionalExamService.streamUserStats(user.uid),
-                      builder: (context, snapshot) {
-                        final stats = snapshot.data;
-                        final streak = _calculateStreak(stats?.lastTakenAt);
-                        final streakText = streak > 0 ? '$streak Days' : 'Start Now!';
-                        final streakMessage = streak > 0 
-                            ? 'Study streak! Keep going!' 
-                            : 'Begin your study streak today';
-                        
-                        return Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFFFA500), Color(0xFFFFB84D)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFFFFA500).withOpacity(0.3),
-                                blurRadius: 12,
-                                offset: const Offset(0, 4),
+                    child: Padding(
+                      padding: EdgeInsets.zero,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 16),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              children: [
+                        FutureBuilder<DateTime?>(
+                          future: PreferencesService.getExamDate(),
+                          builder: (context, snapshot) {
+                            final examDate = snapshot.data;
+                            final daysRemaining = examDate != null
+                                ? examDate.difference(DateTime.now()).inDays
+                                : null;
+
+                            return Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF6B6B),
+                                    Color(0xFFFF8E8E)
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFFFF6B6B)
+                                        .withOpacity(0.3),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'EXAM IN',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    daysRemaining != null
+                                        ? '$daysRemaining'
+                                        : '--',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 48,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Text(
+                                    'Days Remaining',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    daysRemaining != null
+                                        ? 'Time to prepare for your theory test!'
+                                        : 'Set your exam date in Provisional Exam page',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.9),
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        if (user != null)
+                          StreamBuilder<UserExamStats?>(
+                            stream: ProvisionalExamService.streamUserStats(
+                                user.uid),
+                            builder: (context, snapshot) {
+                              final stats = snapshot.data;
+                              final avgScore = stats != null
+                                  ? '${stats.averageScore.toStringAsFixed(0)}%'
+                                  : '0%';
+                              final quizTaken =
+                                  stats?.testsTaken.toString() ?? '0';
+                              final questionsAnswered =
+                                  stats?.questionsAnswered.toString() ?? '0';
+
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: _buildStatCard(
+                                          context,
+                                          icon: Icons.bar_chart_rounded,
+                                          value: avgScore,
+                                          label: 'Average score',
+                                          color: const Color(0xFF007AFF),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: _buildStatCard(
+                                          context,
+                                          icon: Icons.quiz_outlined,
+                                          value: quizTaken,
+                                          label: 'Quiz taken',
+                                          color: const Color(0xFF007AFF),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: _buildStatCard(
+                                          context,
+                                          icon: Icons.help_outline_rounded,
+                                          value: questionsAnswered,
+                                          label: 'Questions Answered',
+                                          color: const Color(0xFF007AFF),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: _buildStatCard(
+                                          context,
+                                          icon: Icons.emoji_events_outlined,
+                                          value: '${stats?.bestScore ?? 0}%',
+                                          label: 'Best Score',
+                                          color: const Color(0xFFFF3B30),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          )
+                        else
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      context,
+                                      icon: Icons.bar_chart_rounded,
+                                      value: '--',
+                                      label: 'Average score',
+                                      color: const Color(0xFF007AFF),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      context,
+                                      icon: Icons.quiz_outlined,
+                                      value: '--',
+                                      label: 'Quiz taken',
+                                      color: const Color(0xFF007AFF),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      context,
+                                      icon: Icons.help_outline_rounded,
+                                      value: '--',
+                                      label: 'Questions Answered',
+                                      color: const Color(0xFF007AFF),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      context,
+                                      icon: Icons.emoji_events_outlined,
+                                      value: '0%',
+                                      label: 'Best Score',
+                                      color: const Color(0xFFFF3B30),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(12),
+                        const SizedBox(height: 16),
+                        if (user != null)
+                          StreamBuilder<UserExamStats?>(
+                            stream: ProvisionalExamService.streamUserStats(
+                                user.uid),
+                            builder: (context, snapshot) {
+                              final stats = snapshot.data;
+                              final streak = stats?.streak ?? 0;
+                              final streakText = streak > 0
+                                  ? '$streak Day${streak > 1 ? 's' : ''}'
+                                  : 'Start Now!';
+                              final streakMessage = streak > 0
+                                  ? 'Study streak! Keep it up!'
+                                  : 'Begin your study streak today';
+
+                              return Container(
+                                padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  shape: BoxShape.circle,
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFFFFA500),
+                                      Color(0xFFFFB84D)
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFFFFA500)
+                                          .withOpacity(0.3),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
-                                child: const Icon(
-                                  Icons.local_fire_department_rounded,
-                                  color: Colors.white,
-                                  size: 32,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Row(
                                   children: [
-                                    Text(
-                                      streakText,
-                                      style: const TextStyle(
+                                    Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.2),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.local_fire_department_rounded,
                                         color: Colors.white,
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
+                                        size: 32,
                                       ),
                                     ),
-                                    Text(
-                                      streakMessage,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            streakText,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            streakMessage,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  else
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFFFFA500), Color(0xFFFFB84D)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFFFFA500).withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
+                              );
+                            },
+                          )
+                        else
                           Container(
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.local_fire_department_rounded,
-                              color: Colors.white,
-                              size: 32,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          const Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'No Streak',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Sign in to start tracking!',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                  ),
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFFFFA500), Color(0xFFFFB84D)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xFFFFA500).withOpacity(0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  const SizedBox(height: 16),
-                  if (user != null)
-                    StreamBuilder<UserExamStats?>(
-                      stream: ProvisionalExamService.streamUserStats(user.uid),
-                      builder: (context, snapshot) {
-                        final stats = snapshot.data;
-                        final avgScore = stats?.averageScore ?? 0;
-                        final quizCount = stats?.testsTaken ?? 0;
-                        final readinessPercent = (avgScore / 100).clamp(0.0, 1.0);
-                        final readinessText = quizCount > 0
-                            ? 'You\'ve completed $quizCount quiz${quizCount == 1 ? '' : 'es'} so far. ${avgScore >= 70 ? "You\'re ready!" : "Keep practicing!"}'
-                            : 'Take your first quiz to get started!';
-                        
-                        return Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFF34C759), Color(0xFF30D158)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF34C759).withOpacity(0.3),
-                                blurRadius: 12,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 80,
-                                height: 80,
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: SizedBox(
-                                        width: 80,
-                                        height: 80,
-                                        child: CircularProgressIndicator(
-                                          value: readinessPercent,
-                                          strokeWidth: 8,
-                                          backgroundColor: Colors.white.withOpacity(0.3),
-                                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        '${avgScore.toStringAsFixed(0)}%',
-                                        style: const TextStyle(
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.local_fire_department_rounded,
+                                    color: Colors.white,
+                                    size: 32,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                const Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'No Streak',
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 20,
+                                          fontSize: 28,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      Text(
+                                        'Sign in to start tracking!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const SizedBox(height: 16),
+                        if (user != null)
+                          StreamBuilder<UserExamStats?>(
+                            stream: ProvisionalExamService.streamUserStats(
+                                user.uid),
+                            builder: (context, snapshot) {
+                              final stats = snapshot.data;
+                              final avgScore = stats?.averageScore ?? 0;
+                              final quizCount = stats?.testsTaken ?? 0;
+                              final readinessPercent =
+                                  (avgScore / 100).clamp(0.0, 1.0);
+                              final readinessText = quizCount > 0
+                                  ? 'You\'ve completed $quizCount quiz${quizCount == 1 ? '' : 'es'} so far. ${avgScore >= 70 ? "You\'re ready!" : "Keep practicing!"}'
+                                  : 'Take your first quiz to get started!';
+
+                              return Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFF34C759),
+                                      Color(0xFF30D158)
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF34C759)
+                                          .withOpacity(0.3),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
                                     ),
                                   ],
                                 ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Row(
                                   children: [
-                                    const Text(
-                                      'Learn Readiness',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                    SizedBox(
+                                      width: 80,
+                                      height: 80,
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: SizedBox(
+                                              width: 80,
+                                              height: 80,
+                                              child: CircularProgressIndicator(
+                                                value: readinessPercent,
+                                                strokeWidth: 8,
+                                                backgroundColor: Colors.white
+                                                    .withOpacity(0.3),
+                                                valueColor:
+                                                    const AlwaysStoppedAnimation<
+                                                        Color>(Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                          Center(
+                                            child: Text(
+                                              '${avgScore.toStringAsFixed(0)}%',
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      readinessText,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
+                                    const SizedBox(width: 20),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'Learn Readiness',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            readinessText,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
+                              );
+                            },
+                          )
+                        else
+                          Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF34C759), Color(0xFF30D158)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  else
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF34C759), Color(0xFF30D158)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF34C759).withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: Stack(
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xFF34C759).withOpacity(0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Row(
                               children: [
-                                Center(
-                                  child: SizedBox(
-                                    width: 80,
-                                    height: 80,
-                                    child: CircularProgressIndicator(
-                                      value: 0,
-                                      strokeWidth: 8,
-                                      backgroundColor: Colors.white.withOpacity(0.3),
-                                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-                                    ),
+                                SizedBox(
+                                  width: 80,
+                                  height: 80,
+                                  child: Stack(
+                                    children: [
+                                      Center(
+                                        child: SizedBox(
+                                          width: 80,
+                                          height: 80,
+                                          child: CircularProgressIndicator(
+                                            value: 0,
+                                            strokeWidth: 8,
+                                            backgroundColor:
+                                                Colors.white.withOpacity(0.3),
+                                            valueColor:
+                                                const AlwaysStoppedAnimation<
+                                                    Color>(Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      const Center(
+                                        child: Text(
+                                          '--',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const Center(
-                                  child: Text(
-                                    '--',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                const SizedBox(width: 20),
+                                const Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Learn Readiness',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Sign in to track your progress!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(width: 20),
-                          const Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Learn Readiness',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                        const SizedBox(height: 24),
+                        if (user != null)
+                          StreamBuilder<UserExamStats?>(
+                            stream: ProvisionalExamService.streamUserStats(
+                                user.uid),
+                            builder: (context, snapshot) {
+                              final stats = snapshot.data;
+                              final categoryStats = stats?.categoryStats ?? {};
+
+                              // Get stats for each category
+                              final trafficSigns =
+                                  categoryStats['Traffic Signs'];
+                              final roadSafety = categoryStats['Road Safety'];
+                              final vehicleControl =
+                                  categoryStats['Vehicle Control'];
+
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 4,
+                                        height: 20,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF007AFF),
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'Progress by Topic',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.color,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Sign in to track your progress!',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  const SizedBox(height: 24),
-                  if (user != null)
-                    StreamBuilder<UserExamStats?>(
-                      stream: ProvisionalExamService.streamUserStats(user.uid),
-                      builder: (context, snapshot) {
-                        final stats = snapshot.data;
-                        final categoryStats = stats?.categoryStats ?? {};
-                        
-                        // Get stats for each category
-                        final trafficSigns = categoryStats['Traffic Signs'];
-                        final roadSafety = categoryStats['Road Safety'];
-                        final vehicleControl = categoryStats['Vehicle Control'];
-                        
-                        return Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 4,
-                                  height: 20,
-                                  decoration: BoxDecoration(
+                                  const SizedBox(height: 12),
+                                  _buildCategoryCard(
+                                    context,
+                                    title: 'Traffic Signs',
+                                    stats: trafficSigns,
                                     color: const Color(0xFF007AFF),
-                                    borderRadius: BorderRadius.circular(2),
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Progress by Topic',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                                  const SizedBox(height: 8),
+                                  _buildCategoryCard(
+                                    context,
+                                    title: 'Road Safety',
+                                    stats: roadSafety,
+                                    color: const Color(0xFFFFA500),
                                   ),
-                                ),
+                                  const SizedBox(height: 8),
+                                  _buildCategoryCard(
+                                    context,
+                                    title: 'Vehicle Control',
+                                    stats: vehicleControl,
+                                    color: const Color(0xFF34C759),
+                                  ),
+                                  const SizedBox(height: 24),
+                                ],
+                              );
+                            },
+                          )
+                        else
+                                  const SizedBox(height: 24),
                               ],
                             ),
-                            const SizedBox(height: 12),
-                            _buildCategoryCard(
-                              context,
-                              title: 'Traffic Signs',
-                              stats: trafficSigns,
-                              color: const Color(0xFF007AFF),
-                            ),
-                            const SizedBox(height: 8),
-                            _buildCategoryCard(
-                              context,
-                              title: 'Road Safety',
-                              stats: roadSafety,
-                              color: const Color(0xFFFFA500),
-                            ),
-                            const SizedBox(height: 8),
-                            _buildCategoryCard(
-                              context,
-                              title: 'Vehicle Control',
-                              stats: vehicleControl,
-                              color: const Color(0xFF34C759),
-                            ),
-                            const SizedBox(height: 24),
-                          ],
-                        );
-                      },
-                    )
-                  else
-                    const SizedBox(height: 24),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const ContactUsCard(),
-                  const SizedBox(height: 24),
                 ],
               ),
             ),
           ),
+          const ContactUsCard(),
         ],
       ),
     );
-  }
-
-  int _calculateStreak(DateTime? lastTakenAt) {
-    if (lastTakenAt == null) return 0;
-    
-    final now = DateTime.now();
-    final difference = now.difference(lastTakenAt).inDays;
-    
-    // If last taken within 24 hours, count as active streak
-    // For simplicity, assuming 1 day = maintain streak
-    if (difference <= 1) {
-      return 1; // Would need to track consecutive days in DB for accurate streak
-    }
-    
-    return 0; // Streak broken if more than 1 day
   }
 
   Widget _buildCategoryCard(
@@ -688,7 +723,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
             progressText,
             style: TextStyle(
               fontSize: 12,
-              color: Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xFF8E8E93),
+              color: Theme.of(context).textTheme.bodyMedium?.color ??
+                  const Color(0xFF8E8E93),
             ),
           ),
         ],
@@ -735,7 +771,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
           Text(
             label,
             style: TextStyle(
-              color: Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xFF8E8E93),
+              color: Theme.of(context).textTheme.bodyMedium?.color ??
+                  const Color(0xFF8E8E93),
               fontSize: 12,
             ),
           ),

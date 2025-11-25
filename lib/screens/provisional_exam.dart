@@ -269,11 +269,11 @@ class _StatsSection extends StatelessWidget {
       stream: ProvisionalExamService.streamUserStats(userId!),
       builder: (context, snapshot) {
         final stats = snapshot.data;
-        final testsTakenText = stats?.testsTaken.toString() ?? '--';
-        final answeredText = stats?.questionsAnswered.toString() ?? '--';
-        final accuracyText = (stats == null || stats.questionsAnswered == 0)
-            ? '--'
-            : '${stats.averageScore.toStringAsFixed(0)}%';
+        final testsTakenText = stats?.testsTaken.toString() ?? '0';
+        final answeredText = stats?.questionsAnswered.toString() ?? '0';
+        final accuracyText = stats != null
+            ? '${stats.averageScore.toStringAsFixed(0)}%'
+            : '0%';
 
         return Column(
           children: [

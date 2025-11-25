@@ -14,23 +14,23 @@ class MockTestPage extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
-          // Page Header
-          PageHeader(
-            title: 'Mock Test',
-            subtitle: 'Full Exam stimulation',
-            onBackPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          
-          // Main Content
+          // Scrollable content
           Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                padding: const EdgeInsets.all(20),
-                child: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Page Header
+                  PageHeader(
+                    title: 'Mock Test',
+                    subtitle: 'Full Exam stimulation',
+                    onBackPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
@@ -106,17 +106,18 @@ class MockTestPage extends StatelessWidget {
                             ),
                           );
                         },
-                      ), 
+                      ),
                     ],
                   ),
                 ),
               ),
-              // Contact Us Card
-              const ContactUsCard(),
+              const SizedBox(height: 32),
             ],
           ),
         ),
-      ),  
+      ),
+      // Contact Us Footer
+      ContactUsCard(),
     ],
   ),
 );
