@@ -60,9 +60,7 @@
   {"id": "58", "question": "Trailer obscuring towing light indicator:", "options": {"a": "White/yellow/amber rear light", "b": "Green/yellow rear light", "c": "A and B are correct", "d": "No correct answer is included"}, "correct_answer": "a"},
   {"id": "59", "question": "Load projection beyond wheels:", "options": {"a": "Rear 3.50 m", "b": "Front 1.70 m", "c": "A and B are correct", "d": "No correct answer is included"}, "correct_answer": "a"},
   {"id": "60", "question": "Load projecting >1m indicator:", "options": {"a": "Red light/reflector day", "b": "Red cloth night", "c": "Yellow light", "d": "No correct answer is included"}, "correct_answer": "d"}
-]
-
-[
+,
 {"id": "61", "question": "Width of loose load (crops) can reach:", "options": {"a": "2.50 m", "b": "2.75 m", "c": "3 m", "d": "No correct answer is included"}, "correct_answer": "b"},
 {"id": "62", "question": "Max weight articulated 3-axle vehicle:", "options": {"a": "20 Tons", "b": "16 Tons", "c": "12 Tons", "d": "10 Tons"}, "correct_answer": "c"},
 {"id": "63", "question": "Overtaking signal light color:", "options": {"a": "Yellow", "b": "Green", "c": "White", "d": "Red"}, "correct_answer": "b"},
@@ -124,9 +122,7 @@
 {"id": "118", "question": "Mud/Slip exit aid:", "options": {"a": "Studs", "b": "Chains", "c": "A and B are correct", "d": "No correct answer is included"}, "correct_answer": "b"},
 {"id": "119", "question": "Loose load width (local transport):", "options": {"a": "4 m", "b": "3.50 m", "c": "3 m", "d": "No correct answer is included"}, "correct_answer": "c"},
 {"id": "120", "question": "Max truck weight (General):", "options": {"a": "10 T", "b": "16 T", "c": "24 T", "d": "No correct answer is included"}, "correct_answer": "d"}
-]
-
-[
+,
 {"id": "121", "question": "Short distance warning plate shape:", "options": {"a": "Square white", "b": "Rectangle white", "c": "Triangle red border", "d": "No correct answer is included"}, "correct_answer": "b"},
 {"id": "122", "question": "Low beam range at night:", "options": {"a": "100 m", "b": "50 m", "c": "40 m", "d": "No correct answer is included"}, "correct_answer": "c"},
 {"id": "123", "question": "Registration change notification period:", "options": {"a": "2 months", "b": "1 month", "c": "15 days", "d": "No correct answer is included"}, "correct_answer": "d"},
@@ -145,9 +141,7 @@
 {"id": "137", "question": "Danger length sign colors:", "options": {"a": "White/Blue", "b": "Blue/White", "c": "Blue/White/Black", "d": "No correct answer is included"}, "correct_answer": "d"},
 {"id": "138", "question": "Broken yellow curb line means:", "options": {"a": "Stop prohibited", "b": "Stop/Park prohibited", "c": "Parking zone", "d": "No correct answer is included"}, "correct_answer": "d"},
 {"id": "139", "question": "Overhang limits:", "options": {"a": "Rear 3.40m", "b": "Front 2.50m", "c": "A and B are correct", "d": "No correct answer is included"}, "correct_answer": "d"}
-]
-
-[
+,
 {"id": "171", "question": "Max weight 3 axles (4 wheels):", "options": {"a": "24 Tons", "b": "10 Tons", "c": "16 Tons", "d": "53 Tons"}, "correct_answer": "a"},
 {"id": "172", "question": "Long coupling (>3m) indicator:", "options": {"a": "Red cloth", "b": "Amber side light", "c": "A and B are correct", "d": "No correct answer is included"}, "correct_answer": "b"},
 {"id": "173", "question": "Stop light visibility:", "options": {"a": "Night 200m", "b": "Day 50m", "c": "Night 100m", "d": "No correct answer is included"}, "correct_answer": "d"},
