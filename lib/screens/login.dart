@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:smartdrive/widgets/button_component.dart';
 import 'package:smartdrive/widgets/input.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -20,10 +21,36 @@ class _LoginState extends State<Login> {
   bool _isSubmitting = false;
 
   @override
+  void initState() {
+    super.initState();
+    _loadRememberMe();
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadRememberMe() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _rememberMe = prefs.getBool('rememberMe') ?? false;
+      if (_rememberMe) {
+        _emailController.text = prefs.getString('email') ?? '';
+      }
+    });
+  }
+
+  Future<void> _saveRememberMe() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('rememberMe', _rememberMe);
+    if (_rememberMe) {
+      await prefs.setString('email', _emailController.text.trim());
+    } else {
+      await prefs.remove('email');
+    }
   }
 
   Future<void> _handleLogin() async {
@@ -41,10 +68,8 @@ class _LoginState extends State<Login> {
 
       if (!mounted) return;
       if (isVerified) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Logged in successfully. Welcome back!')),
-        );
+        await _saveRememberMe();
+        Navigator.of(context).pushNamedAndRemoveUntil('/welcome', (route) => false);
       } else {
         await AuthService.sendVerificationEmail();
         if (!mounted) return;
@@ -130,6 +155,7 @@ class _LoginState extends State<Login> {
                   text: '••••••••',
                   controller: _passwordController,
                   obscureText: true,
+                  showPasswordToggle: true,
                   textInputAction: TextInputAction.done,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -163,12 +189,16 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Password reset coming soon.')),
-                        );
+                        Navigator.pushNamed(context, '/forgot_password');
                       },
-                      child: const Text('Forgot Password?'),
+                      child: Text(
+                        'Forgot Password?',
+                        style: GoogleFonts.montserrat(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF004299),
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartdrive/widgets/contact_us_card.dart';
+import 'package:smartdrive/services/auth_service.dart';
 
 class Welcomepage extends StatelessWidget {
   const Welcomepage({super.key});
@@ -36,16 +37,30 @@ class Welcomepage extends StatelessWidget {
                   colors: [Color(0xFF006FFF), Color(0xFF004299)],
                 ),
               ),
-              child: Center(
-                child: Text(
-                  "SmartDrive",
-                  style: TextStyle(
-                    fontFamily: "NicoMoji",
-                    fontSize: 40,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(width: 48),
+                  Text(
+                    "SmartDrive",
+                    style: TextStyle(
+                      fontFamily: "NicoMoji",
+                      fontSize: 40,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
+                  IconButton(
+                    onPressed: () async {
+                      await AuthService.signOut();
+                      if (context.mounted) {
+                        Navigator.of(context).pushNamedAndRemoveUntil('/homepage', (route) => false);
+                      }
+                    },
+                    icon: const Icon(Icons.logout_rounded, color: Colors.white),
+                    tooltip: 'Sign out',
+                  ),
+                ],
               ),
             ),
             Padding(
