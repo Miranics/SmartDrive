@@ -11,7 +11,7 @@ class MockTestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           // Page Header
@@ -34,7 +34,9 @@ class MockTestPage extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: AppColors.white,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF1A1A2E)
+                        : AppColors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: AppColors.primaryBlue,
@@ -61,23 +63,23 @@ class MockTestPage extends StatelessWidget {
                       const SizedBox(height: 24),
                       
                       // Title
-                      const Text(
+                      Text(
                         'Ready for the Test?',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
                       
                       // Description
-                      const Text(
+                      Text(
                         'This test contains 20 questions similar to the real exam. You have 20 minutes to complete it.',
                         style: TextStyle(
                           fontSize: 16,
-                          color: AppColors.textPrimary,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                           height: 1.5,
                         ),
                         textAlign: TextAlign.center,
@@ -121,25 +123,27 @@ class MockTestPage extends StatelessWidget {
 }
 
   Widget _buildDetailRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 16,
-            color: AppColors.textPrimary,
+    return Builder(
+      builder: (context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
+            ),
           ),
-        ),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

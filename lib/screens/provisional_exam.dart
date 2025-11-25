@@ -6,6 +6,7 @@ import 'package:smartdrive/screens/flashcard.dart';
 import 'package:smartdrive/screens/mock_test_page.dart';
 import 'package:smartdrive/services/auth_service.dart';
 import 'package:smartdrive/services/provisional_exam_service.dart';
+import 'package:smartdrive/services/preferences_service.dart';
 import 'package:smartdrive/widgets/contact_us_card.dart';
 import 'package:smartdrive/widgets/page_header.dart';
 
@@ -36,31 +37,34 @@ class ProvisionalExamPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: _StatsSection(userId: user?.uid),
                   ),
-                  const SizedBox(height: 20),
-                  // Add Test Date Button
+                  const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        // Add test date action
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now().add(const Duration(days: 14)),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(const Duration(days: 365)),
+                        );
+                        if (date != null) {
+                          await PreferencesService.setExamDate(date);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Exam date set to ${date.day}/${date.month}/${date.year}')),
+                            );
+                          }
+                        }
                       },
-                      icon: const Icon(Icons.add_circle_outline, size: 20),
-                      label: const Text('Add Test Data'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.primaryBlue,
-                        side: const BorderSide(color: AppColors.primaryBlue),
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        minimumSize: const Size(double.infinity, 48),
+                      icon: const Icon(Icons.calendar_today),
+                      label: const Text('Add Test Date'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryBlue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const _QuestionPreview(),
                   ),
                   const SizedBox(height: 24),
                   // Feature Cards
@@ -383,152 +387,3 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-class _QuestionPreview extends StatelessWidget {
-  const _QuestionPreview({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<ProvisionalQuestion>>(
-      stream: ProvisionalExamService.streamQuestions(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Text(
-              'Unable to load questions right now. Please try again soon.',
-            ),
-          );
-        }
-
-        final questions = snapshot.data ?? [];
-        if (questions.isEmpty) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Text(
-              'No questions found yet. Use the Add Test Data button to seed your bank.',
-            ),
-          );
-        }
-
-        final question = questions.first;
-
-        return Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.lightGray),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Text(
-                    'Question Bank Preview',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '${questions.length} Qs',
-                      style: const TextStyle(
-                        color: AppColors.primaryBlue,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Text(
-                question.question,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ...question.sortedOptions.take(3).map(
-                (option) => Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.lightGray),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 28,
-                        height: 28,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: AppColors.paleBlue,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          option.key.toUpperCase(),
-                          style: const TextStyle(
-                            color: AppColors.primaryBlue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          option.value,
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Answer: ${question.correctAnswer.toUpperCase()}',
-                style: const TextStyle(
-                  color: AppColors.teal,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextButton.icon(
-                onPressed: () => Navigator.pushNamed(context, '/quiz'),
-                icon: const Icon(Icons.play_circle_outline),
-                label: const Text('Open Practice Quiz'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}

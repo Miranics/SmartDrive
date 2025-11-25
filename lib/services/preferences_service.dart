@@ -5,6 +5,7 @@ class PreferencesService {
   static const String _notificationsKey = 'notifications';
   static const String _studyRemindersKey = 'studyReminders';
   static const String _soundEffectsKey = 'soundEffects';
+  static const String _examDateKey = 'examDate';
 
   static Future<bool> getDarkMode() async {
     final prefs = await SharedPreferences.getInstance();
@@ -44,5 +45,16 @@ class PreferencesService {
   static Future<void> setSoundEffects(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_soundEffectsKey, value);
+  }
+
+  static Future<DateTime?> getExamDate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final dateString = prefs.getString(_examDateKey);
+    return dateString != null ? DateTime.parse(dateString) : null;
+  }
+
+  static Future<void> setExamDate(DateTime date) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_examDateKey, date.toIso8601String());
   }
 }
