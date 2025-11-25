@@ -20,6 +20,7 @@ import 'package:smartdrive/screens/verify_email.dart';
 import 'package:smartdrive/screens/provisional_exam.dart';
 import 'package:smartdrive/screens/QuizPage.dart';
 import 'package:smartdrive/screens/progress_screen.dart';
+import 'package:smartdrive/screens/mock_test_page.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
@@ -66,6 +67,7 @@ class MyApp extends ConsumerWidget {
         '/quiz': (context) => RouteGuard(child: Quizpage()),
         '/progress': (context) => RouteGuard(child: ProgressScreen()),
         '/tips': (context) => RouteGuard(child: PracticalTipsPage()),
+        '/mock_test_page': (context) => RouteGuard(child: MockTestPage()),
       },
     );
   }
