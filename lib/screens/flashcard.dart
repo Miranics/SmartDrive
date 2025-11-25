@@ -98,11 +98,13 @@ class _FlashcardPageState extends State<FlashcardPage> {
           width: 200,
           height: 200,
           decoration: BoxDecoration(
-            shape: BoxShape.circle, // Simplified octagon as circle for CSS-like styling
+            shape: BoxShape
+                .circle, // Simplified octagon as circle for CSS-like styling
             color: Colors.red[700],
             border: Border.all(color: Colors.white, width: 4),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 4)
+              BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2), blurRadius: 4)
             ],
           ),
           child: Center(
@@ -145,7 +147,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
           height: 200,
           decoration: BoxDecoration(
             color: const Color(0xFFFFD700), // Warning yellow
-            borderRadius: BorderRadius.circular(20), // Rounded square/diamond feel
+            borderRadius:
+                BorderRadius.circular(20), // Rounded square/diamond feel
             border: Border.all(color: Colors.black, width: 4),
           ),
           child: const Center(
@@ -218,7 +221,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
                         children: [
                           // 1. Dynamic Traffic Sign
                           _buildTrafficSign(currentCard['type']!),
-                          
+
                           const SizedBox(height: 32),
 
                           // 2. Question
@@ -257,7 +260,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
                           // 4. Show/Hide Button
                           ButtonComponent(
                             text: _showAnswer ? 'Hide Answer' : 'Show Answer',
-                            type: ButtonType.primary,
+                            type: ButtonType.secondary,
                             onPressed: _toggleAnswer,
                             width: double.infinity,
                           ),
@@ -275,7 +278,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
                         Expanded(
                           child: ButtonComponent(
                             text: 'Previous',
-                            type: ButtonType.outlined,
+                            type: ButtonType.small,
                             onPressed: _currentIndex > 0 ? _previousCard : null,
                             width: double.infinity,
                           ),

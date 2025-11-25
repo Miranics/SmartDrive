@@ -14,13 +14,6 @@ class Homepage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text('SmartDrive'),
-        actions: [
-          IconButton(
-            onPressed: AuthService.signOut,
-            icon: const Icon(Icons.logout_rounded),
-            tooltip: 'Sign out',
-          ),
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -60,6 +53,20 @@ class Homepage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/signup');
                 },
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: Text(
+                  'Already have an account? Log in',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF004299),
+                  ),
+                ),
               ),
             ],
           ),

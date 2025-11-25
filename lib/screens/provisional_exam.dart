@@ -107,7 +107,7 @@ class ProvisionalExamPage extends StatelessWidget {
                                 Colors.blue[50]!,
                                 Colors.blue,
                                 onTap: () {
-                                  // Navigate to practice quiz
+                                  Navigator.pushNamed(context, '/quiz');
                                 },
                               ),
                             ),
@@ -125,7 +125,9 @@ class ProvisionalExamPage extends StatelessWidget {
                                 Colors.indigo[50]!,
                                 Colors.indigo,
                                 onTap: () {
-                                  // Navigate to mock tests
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Mock tests coming soon!')),
+                                  );
                                 },
                               ),
                             ),
@@ -139,7 +141,7 @@ class ProvisionalExamPage extends StatelessWidget {
                                 Colors.green[50]!,
                                 Colors.green,
                                 onTap: () {
-                                  // Navigate to progress
+                                  Navigator.pushNamed(context, '/progress');
                                 },
                               ),
                             ),

@@ -64,7 +64,7 @@ class _SignupState extends State<Signup> {
   }
 
   void _navigateToLogin() {
-    Navigator.pushReplacementNamed(context, '/login');
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
@@ -126,6 +126,7 @@ class _SignupState extends State<Signup> {
                   text: '••••••••',
                   controller: _passwordController,
                   obscureText: true,
+                  showPasswordToggle: true,
                   textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value == null || value.length < 8) {
@@ -140,6 +141,7 @@ class _SignupState extends State<Signup> {
                   text: '••••••••',
                   controller: _confirmPasswordController,
                   obscureText: true,
+                  showPasswordToggle: true,
                   textInputAction: TextInputAction.done,
                   validator: (value) {
                     if (value == null || value.isEmpty) {

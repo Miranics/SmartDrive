@@ -5,17 +5,22 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartdrive/config/runtime_env.dart';
 import 'package:smartdrive/core/theme/app_theme.dart';
+import 'package:smartdrive/core/router/route_guard.dart';
 import 'package:smartdrive/features/auth/presentation/providers/auth_providers.dart';
 import 'package:smartdrive/features/auth/presentation/pages/login_page.dart';
 import 'package:smartdrive/features/auth/presentation/pages/signup_page.dart';
 import 'package:smartdrive/firebase_options.dart';
 import 'package:smartdrive/screens/homepage.dart';
+import 'package:smartdrive/screens/login.dart';
+import 'package:smartdrive/screens/signup.dart';
+import 'package:smartdrive/screens/forgot_password.dart';
 import 'package:smartdrive/screens/WelcomePage.dart';
 import 'package:smartdrive/screens/tips_page.dart';
 import 'package:smartdrive/screens/verify_email.dart';
 import 'package:smartdrive/screens/provisional_exam.dart';
 import 'package:smartdrive/screens/QuizPage.dart';
 import 'package:smartdrive/screens/progress_screen.dart';
+
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 Future<void> main() async {
@@ -52,13 +57,15 @@ class MyApp extends ConsumerWidget {
       routes: {
         '/': (context) => const AuthGate(),
         '/homepage': (context) => const Homepage(),
-        '/login': (context) => const LoginPage(),
-        '/signup': (context) => const SignupPage(),
-        '/welcome': (context) => const Welcomepage(),
-        '/provisional_exam': (context) => ProvisionalExamPage(),
-        '/quiz': (context) => Quizpage(),
-        '/progress': (context) => const ProgressScreen(),
-        '/tips': (context) => const PracticalTipsPage(),
+        '/login': (context) => const Login(),
+        '/signup': (context) => const Signup(),
+        '/forgot_password': (context) => const ForgotPasswordPage(),
+        '/welcome': (context) => RouteGuard(child: Welcomepage()),
+        '/provisional_exam': (context) =>
+            RouteGuard(child: ProvisionalExamPage()),
+        '/quiz': (context) => RouteGuard(child: Quizpage()),
+        '/progress': (context) => RouteGuard(child: ProgressScreen()),
+        '/tips': (context) => RouteGuard(child: PracticalTipsPage()),
       },
     );
   }
