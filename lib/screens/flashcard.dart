@@ -16,7 +16,6 @@ class _FlashcardPageState extends State<FlashcardPage> {
   bool _showAnswer = false;
   int _currentIndex = 0;
 
-  // Added 'type' to identify which sign to draw
   final List<Map<String, String>> _flashcards = [
     {
       'type': 'no_entry',
@@ -69,7 +68,6 @@ class _FlashcardPageState extends State<FlashcardPage> {
     }
   }
 
-  // Helper method to draw different signs based on type
   Widget _buildTrafficSign(String type) {
     switch (type) {
       case 'no_entry':
@@ -92,19 +90,16 @@ class _FlashcardPageState extends State<FlashcardPage> {
             ),
           ),
         );
-
       case 'stop':
         return Container(
           width: 200,
           height: 200,
           decoration: BoxDecoration(
-            shape: BoxShape
-                .circle, // Simplified octagon as circle for CSS-like styling
+            shape: BoxShape.circle,
             color: Colors.red[700],
             border: Border.all(color: Colors.white, width: 4),
             boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2), blurRadius: 4)
+              BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 4)
             ],
           ),
           child: Center(
@@ -119,7 +114,6 @@ class _FlashcardPageState extends State<FlashcardPage> {
             ),
           ),
         );
-
       case 'speed_limit':
         return Container(
           width: 200,
@@ -140,22 +134,19 @@ class _FlashcardPageState extends State<FlashcardPage> {
             ),
           ),
         );
-
       case 'pedestrian':
         return Container(
           width: 200,
           height: 200,
           decoration: BoxDecoration(
-            color: const Color(0xFFFFD700), // Warning yellow
-            borderRadius:
-                BorderRadius.circular(20), // Rounded square/diamond feel
+            color: const Color(0xFFFFD700),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.black, width: 4),
           ),
           child: const Center(
             child: Icon(Icons.directions_walk, size: 120, color: Colors.black),
           ),
         );
-
       case 'parking':
         return Container(
           width: 200,
@@ -176,7 +167,6 @@ class _FlashcardPageState extends State<FlashcardPage> {
             ),
           ),
         );
-
       default:
         return const SizedBox(width: 200, height: 200);
     }
@@ -187,7 +177,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
     final currentCard = _flashcards[_currentIndex];
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           Expanded(
@@ -200,14 +190,15 @@ class _FlashcardPageState extends State<FlashcardPage> {
                     onBackPressed: () => Navigator.of(context).pop(),
                   ),
                   const SizedBox(height: 32),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: AppColors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFF1A1A2E)
+                            : AppColors.white,
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
@@ -219,45 +210,39 @@ class _FlashcardPageState extends State<FlashcardPage> {
                       ),
                       child: Column(
                         children: [
-                          // 1. Dynamic Traffic Sign
                           _buildTrafficSign(currentCard['type']!),
-
                           const SizedBox(height: 32),
-
-                          // 2. Question
                           Text(
                             currentCard['question']!,
                             style: GoogleFonts.inter(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black87,
+                              color: Theme.of(context).textTheme.bodyLarge?.color,
                             ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 24),
-
-                          // 3. Answer
                           if (_showAnswer) ...[
                             Container(
                               width: double.infinity,
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: Colors.grey[100],
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? const Color(0xFF0F3460)
+                                    : Colors.grey[100],
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 currentCard['answer']!,
                                 style: GoogleFonts.inter(
                                   fontSize: 16,
-                                  color: Colors.black87,
+                                  color: Theme.of(context).textTheme.bodyLarge?.color,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
                             const SizedBox(height: 24),
                           ],
-
-                          // 4. Show/Hide Button
                           ButtonComponent(
                             text: _showAnswer ? 'Hide Answer' : 'Show Answer',
                             type: ButtonType.secondary,
@@ -269,8 +254,6 @@ class _FlashcardPageState extends State<FlashcardPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-
-                  // Navigation Buttons
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
@@ -288,9 +271,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
                           child: ButtonComponent(
                             text: 'Next',
                             type: ButtonType.secondary,
-                            onPressed: _currentIndex < _flashcards.length - 1
-                                ? _nextCard
-                                : null,
+                            onPressed: _currentIndex < _flashcards.length - 1 ? _nextCard : null,
                             width: double.infinity,
                           ),
                         ),
@@ -302,7 +283,6 @@ class _FlashcardPageState extends State<FlashcardPage> {
               ),
             ),
           ),
-          // Footer
           const ContactUsCard(),
         ],
       ),

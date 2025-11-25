@@ -10,7 +10,7 @@ class ProvisionalExamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           // Scrollable content
@@ -163,10 +163,13 @@ class ProvisionalExamPage extends StatelessWidget {
   }
 
   Widget _buildStatCard(String value, String label, Color bgColor, Color textColor) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: bgColor,
+    return Builder(
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF1A1A2E)
+              : bgColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -189,13 +192,14 @@ class ProvisionalExamPage extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
-              color: Colors.black,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyLarge?.color,
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
           ),
         ],
+      ),
       ),
     );
   }
@@ -219,11 +223,16 @@ class ProvisionalExamPage extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xFFFFFFFF),
-                Color(0xFFFDF6F6),
-              ],
+            gradient: LinearGradient(
+              colors: Theme.of(context).brightness == Brightness.dark
+                  ? [
+                      const Color(0xFF1A1A2E),
+                      const Color(0xFF0F3460),
+                    ]
+                  : [
+                      const Color(0xFFFFFFFF),
+                      const Color(0xFFFDF6F6),
+                    ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -249,10 +258,10 @@ class ProvisionalExamPage extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -261,7 +270,7 @@ class ProvisionalExamPage extends StatelessWidget {
                 subtitle,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
                 textAlign: TextAlign.center,
               ),

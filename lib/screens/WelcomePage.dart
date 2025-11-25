@@ -2,9 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartdrive/widgets/contact_us_card.dart';
 import 'package:smartdrive/services/auth_service.dart';
+import 'package:smartdrive/utils/theme_helper.dart';
 
 class Welcomepage extends StatelessWidget {
   const Welcomepage({super.key});
+
+
+
+  void _handleLogout(BuildContext context) async {
+    await AuthService.signOut();
+    if (context.mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/homepage', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +28,6 @@ class Welcomepage extends StatelessWidget {
       }
     });
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -34,31 +43,30 @@ class Welcomepage extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0xFF006FFF), Color(0xFF004299)],
+                  colors: [
+                    ThemeHelper.getHeaderGradientStart(context),
+                    ThemeHelper.getHeaderGradientEnd(context),
+                  ],
                 ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(width: 48),
-                  Text(
-                    "SmartDrive",
-                    style: TextStyle(
-                      fontFamily: "NicoMoji",
-                      fontSize: 40,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
+                  Expanded(
+                    child: Text(
+                      "SmartDrive",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "NicoMoji",
+                        fontSize: 40,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   IconButton(
-                    onPressed: () async {
-                      await AuthService.signOut();
-                      if (context.mounted) {
-                        Navigator.of(context).pushNamedAndRemoveUntil('/homepage', (route) => false);
-                      }
-                    },
-                    icon: const Icon(Icons.logout_rounded, color: Colors.white),
-                    tooltip: 'Sign out',
+                    icon: const Icon(Icons.settings, color: Colors.white, size: 28),
+                    onPressed: () => Navigator.pushNamed(context, '/settings'),
                   ),
                 ],
               ),
@@ -76,7 +84,10 @@ class Welcomepage extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
-                        colors: [Color(0xFF006FFF), Color(0xFF004299)],
+                        colors: [
+                          ThemeHelper.getHeaderGradientStart(context),
+                          ThemeHelper.getHeaderGradientEnd(context),
+                        ],
                       ),
                     ),
                     child: Center(
@@ -96,7 +107,7 @@ class Welcomepage extends StatelessWidget {
                     style: GoogleFonts.montserrat(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -105,7 +116,7 @@ class Welcomepage extends StatelessWidget {
                     style: GoogleFonts.montserrat(
                       fontSize: 20,
                       height: 1.5,
-                      color: Colors.black,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -123,7 +134,10 @@ class Welcomepage extends StatelessWidget {
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Color(0xFFD9EDFF), Color(0xFFC0E2FF)],
+                          colors: [
+                            ThemeHelper.getCardGradientStart(context),
+                            ThemeHelper.getCardGradientEnd(context),
+                          ],
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -136,12 +150,12 @@ class Welcomepage extends StatelessWidget {
                                 width: 45,
                                 height: 45,
                                 decoration: BoxDecoration(
-                                  color: Color(0xFF0095FF),
+                                  color: ThemeHelper.getIconBackground(context),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
-                                  Icons.edit_document, // Replace with your icon
-                                  color: Colors.black,
+                                  Icons.edit_document,
+                                  color: Colors.white,
                                   size: 24,
                                 ),
                               ),
@@ -153,7 +167,7 @@ class Welcomepage extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: ThemeHelper.getCardTextColor(context),
                                   ),
                                 ),
                               ),
@@ -165,7 +179,7 @@ class Welcomepage extends StatelessWidget {
                             "Practice with flashcards,\nquizzes, and mock tests for your\nprovisional written exam.",
                             style: GoogleFonts.montserrat(
                               fontSize: 18,
-                              color: Colors.black,
+                              color: ThemeHelper.getCardTextColor(context),
                             ),
                           ),
                         ],
@@ -186,7 +200,10 @@ class Welcomepage extends StatelessWidget {
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Color(0xFFD9EDFF), Color(0xFFC0E2FF)],
+                          colors: [
+                            ThemeHelper.getCardGradientStart(context),
+                            ThemeHelper.getCardGradientEnd(context),
+                          ],
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -199,12 +216,12 @@ class Welcomepage extends StatelessWidget {
                                 width: 45,
                                 height: 45,
                                 decoration: BoxDecoration(
-                                  color: Color(0xFF0095FF),
+                                  color: ThemeHelper.getIconBackground(context),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
                                   Icons.directions_car,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   size: 24,
                                 ),
                               ),
@@ -215,7 +232,7 @@ class Welcomepage extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: ThemeHelper.getCardTextColor(context),
                                   ),
                                 ),
                               ),
@@ -226,7 +243,7 @@ class Welcomepage extends StatelessWidget {
                             "Practice with flashcards,\nquizzes, and mock tests for your\nprovisional written exam.",
                             style: GoogleFonts.montserrat(
                               fontSize: 18,
-                              color: Colors.black,
+                              color: ThemeHelper.getCardTextColor(context),
                             ),
                           ),
                         ],
