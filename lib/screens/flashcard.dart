@@ -99,7 +99,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
             color: Colors.red[700],
             border: Border.all(color: Colors.white, width: 4),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 4)
+              BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2), blurRadius: 4)
             ],
           ),
           child: Center(
@@ -217,7 +218,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
                             style: GoogleFonts.inter(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).textTheme.bodyLarge?.color,
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge?.color,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -227,7 +229,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
                               width: double.infinity,
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).brightness == Brightness.dark
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
                                     ? const Color(0xFF0F3460)
                                     : Colors.grey[100],
                                 borderRadius: BorderRadius.circular(8),
@@ -236,7 +239,10 @@ class _FlashcardPageState extends State<FlashcardPage> {
                                 currentCard['answer']!,
                                 style: GoogleFonts.inter(
                                   fontSize: 16,
-                                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.color,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -271,7 +277,9 @@ class _FlashcardPageState extends State<FlashcardPage> {
                           child: ButtonComponent(
                             text: 'Next',
                             type: ButtonType.secondary,
-                            onPressed: _currentIndex < _flashcards.length - 1 ? _nextCard : null,
+                            onPressed: _currentIndex < _flashcards.length - 1
+                                ? _nextCard
+                                : null,
                             width: double.infinity,
                           ),
                         ),
