@@ -5,6 +5,9 @@ class PracticeQuizCard extends StatelessWidget {
   final List<String> options;
   final String? imageAssetPath;
   final Function(int index) onOptionSelected;
+  final int? selectedIndex;
+  final int? correctIndex;
+  final bool enableSelection;
 
   const PracticeQuizCard({
     super.key,
@@ -12,6 +15,9 @@ class PracticeQuizCard extends StatelessWidget {
     required this.options,
     required this.onOptionSelected,
     this.imageAssetPath,
+    this.selectedIndex,
+    this.correctIndex,
+    this.enableSelection = true,
   });
 
   @override
@@ -71,10 +77,15 @@ class PracticeQuizCard extends StatelessWidget {
                   const SizedBox(height: 20),
                 ],
                 ...options.asMap().entries.map((entry) {
-                  int idx = entry.key;
-                  String optionText = entry.value;
-                  String label = String.fromCharCode(65 + idx);
-                  return _buildOptionTile(context, label, optionText, idx);
+                  final idx = entry.key;
+                  final optionText = entry.value;
+                  final label = String.fromCharCode(65 + idx);
+                  return _buildOptionTile(
+                    context,
+                    label,
+                    optionText,
+                    idx,
+                  );
                 }),
               ],
             ),
@@ -84,30 +95,49 @@ class PracticeQuizCard extends StatelessWidget {
     );
   }
 
-  Widget _buildOptionTile(BuildContext context, String label, String text, int index) {
+  Widget _buildOptionTile(
+    BuildContext context,
+    String label,
+    String text,
+    int index,
+  ) {
+    final hasSelection = selectedIndex != null;
+    final isSelected = hasSelection && selectedIndex == index;
+    final isCorrect = correctIndex != null && correctIndex == index;
+
+    Color borderColor = Colors.grey.shade300;
+    List<Color> gradientColors;
+    Color textColor = Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black;
+
+    if (hasSelection && isCorrect) {
+      gradientColors = [const Color(0xFF0F9D58), const Color(0xFF34A853)];
+      borderColor = const Color(0xFF0F9D58);
+      textColor = Colors.white;
+    } else if (hasSelection && isSelected && !isCorrect) {
+      gradientColors = [const Color(0xFFEA4335), const Color(0xFFC5221F)];
+      borderColor = const Color(0xFFEA4335);
+      textColor = Colors.white;
+    } else {
+      gradientColors = Theme.of(context).brightness == Brightness.dark
+          ? [const Color(0xFF1A1A2E), const Color(0xFF0F3460)]
+          : [const Color(0xFFFFFFFF), const Color(0xFFFDF6F6)];
+    }
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: InkWell(
-        onTap: () => onOptionSelected(index),
+        onTap: enableSelection ? () => onOptionSelected(index) : null,
         borderRadius: BorderRadius.circular(12),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: Theme.of(context).brightness == Brightness.dark
-                  ? [
-                      const Color(0xFF1A1A2E),
-                      const Color(0xFF0F3460),
-                    ]
-                  : [
-                      const Color(0xFFFFFFFF),
-                      const Color(0xFFFDF6F6),
-                    ],
+              colors: gradientColors,
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300),
+            border: Border.all(color: borderColor, width: hasSelection ? 1.5 : 1),
           ),
           child: Row(
             children: [
@@ -118,7 +148,7 @@ class PracticeQuizCard extends StatelessWidget {
                   label,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.blueGrey[700],
+                    color: hasSelection ? Colors.white : Colors.blueGrey[700],
                   ),
                 ),
               ),
@@ -127,7 +157,7 @@ class PracticeQuizCard extends StatelessWidget {
                   text,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                    color: textColor,
                   ),
                 ),
               ),
