@@ -54,11 +54,46 @@ class ProvisionalExamService {
     required int correctAnswers,
     Map<String, Map<String, int>>? categoryBreakdown,
   }) async {
+    final docRef = _userStatsCollection.doc(uid);
+    final doc = await docRef.get();
+    final data = doc.data();
+    
+    // Calculate best score
+    final currentBestScore = data?['bestScore'] as int? ?? 0;
+    final newScore = ((correctAnswers / totalQuestions) * 100).round();
+    final bestScore = newScore > currentBestScore ? newScore : currentBestScore;
+    
+    // Calculate streak
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final lastStreakTimestamp = data?['lastStreakDate'] as Timestamp?;
+    final lastStreakDate = lastStreakTimestamp?.toDate();
+    final currentStreak = (data?['streak'] as num?)?.toInt() ?? 0;
+    
+    int newStreak;
+    if (lastStreakDate == null) {
+      newStreak = 1;
+    } else {
+      final lastDate = DateTime(lastStreakDate.year, lastStreakDate.month, lastStreakDate.day);
+      final daysDiff = today.difference(lastDate).inDays;
+      
+      if (daysDiff == 0) {
+        newStreak = currentStreak;
+      } else if (daysDiff == 1) {
+        newStreak = currentStreak + 1;
+      } else {
+        newStreak = 1;
+      }
+    }
+    
     final updates = <String, dynamic>{
       'testsTaken': FieldValue.increment(1),
       'questionsAnswered': FieldValue.increment(totalQuestions),
       'correctAnswers': FieldValue.increment(correctAnswers),
       'lastTakenAt': FieldValue.serverTimestamp(),
+      'bestScore': bestScore,
+      'streak': newStreak,
+      'lastStreakDate': Timestamp.fromDate(today),
     };
 
     // Update category stats if provided
@@ -74,10 +109,8 @@ class ProvisionalExamService {
       });
     }
 
-    await _userStatsCollection.doc(uid).set(
-      updates,
-      SetOptions(merge: true),
-    );
+    await docRef.set(updates, SetOptions(merge: true));
+    print('✅ Mock test recorded: $correctAnswers/$totalQuestions (${newScore}%) - Best: $bestScore% - Streak: $newStreak days');
   }
 
   static Future<void> upsertQuestion(ProvisionalQuestion question) async {
