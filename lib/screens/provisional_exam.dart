@@ -19,13 +19,9 @@ class ProvisionalExamPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          // Scrollable content
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
                   // Page Header using PageHeader widget
                   PageHeader(
                     title: 'Provisional Exam',
@@ -149,14 +145,10 @@ class ProvisionalExamPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
+                  ContactUsCard(),
                 ],
               ),
             ),
-          ),
-          // Contact Us Footer - always visible at bottom, fills entire width
-          ContactUsCard(),
-        ],
-      ),
     );
   }
 

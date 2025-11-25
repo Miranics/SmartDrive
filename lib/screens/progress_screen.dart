@@ -21,12 +21,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
     final user = AuthService.currentUser;
     return Scaffold(
       backgroundColor: ThemeHelper.getHeaderGradientStart(context),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
                   PageHeader(
                     title: 'Progress',
                     subtitle: 'View your accomplishment here',
@@ -640,7 +637,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             },
                           )
                         else
-                                  const SizedBox(height: 24),
+                          const SizedBox(height: 24),
                               ],
                             ),
                           ),
@@ -648,12 +645,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          const ContactUsCard(),
-        ],
+            const ContactUsCard(),
+          ],
+        ),
       ),
     );
   }
