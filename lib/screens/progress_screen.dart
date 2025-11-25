@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartdrive/widgets/page_header.dart';
 import 'package:smartdrive/widgets/contact_us_card.dart';
 import 'package:smartdrive/widgets/progress_bar.dart';
+import 'package:smartdrive/utils/theme_helper.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({Key? key}) : super(key: key);
@@ -9,22 +10,21 @@ class ProgressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF007AFF),
+      backgroundColor: ThemeHelper.getHeaderGradientStart(context),
       body: Column(
         children: [
-          // Using the existing PageHeader component
           PageHeader(
             title: 'Progress',
             subtitle: 'View your accomplishment here',
             onBackPressed: () => Navigator.pop(context),
           ),
-
-          // Scrollable Content
           Expanded(
             child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFF2F2F7),
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? const Color(0xFF16213E)
+                    : const Color(0xFFF2F2F7),
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(24),
                   topRight: Radius.circular(24),
                 ),
@@ -32,7 +32,6 @@ class ProgressScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  // Exam In Card
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -93,12 +92,11 @@ class ProgressScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-
-                  // Stats Grid (2x2)
                   Row(
                     children: [
                       Expanded(
                         child: _buildStatCard(
+                          context,
                           icon: Icons.bar_chart_rounded,
                           value: '87%',
                           label: 'Average score',
@@ -108,6 +106,7 @@ class ProgressScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildStatCard(
+                          context,
                           icon: Icons.quiz_outlined,
                           value: '10',
                           label: 'Quiz taken',
@@ -121,6 +120,7 @@ class ProgressScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: _buildStatCard(
+                          context,
                           icon: Icons.access_time_rounded,
                           value: '15h',
                           label: 'Study Time',
@@ -130,6 +130,7 @@ class ProgressScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildStatCard(
+                          context,
                           icon: Icons.emoji_events_outlined,
                           value: '92%',
                           label: 'Best Score',
@@ -139,8 +140,6 @@ class ProgressScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Streak Card
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -199,8 +198,6 @@ class ProgressScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-
-                  // Learning Readiness Card
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -220,7 +217,6 @@ class ProgressScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        // Circular Progress
                         SizedBox(
                           width: 80,
                           height: 80,
@@ -233,11 +229,8 @@ class ProgressScreen extends StatelessWidget {
                                   child: CircularProgressIndicator(
                                     value: 0.87,
                                     strokeWidth: 8,
-                                    backgroundColor:
-                                        Colors.white.withOpacity(0.3),
-                                    valueColor:
-                                        const AlwaysStoppedAnimation<Color>(
-                                            Colors.white),
+                                    backgroundColor: Colors.white.withOpacity(0.3),
+                                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                                   ),
                                 ),
                               ),
@@ -282,8 +275,6 @@ class ProgressScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-
-                  // Progress by Topic Section
                   Row(
                     children: [
                       Container(
@@ -295,19 +286,17 @@ class ProgressScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      const Text(
+                      Text(
                         'Progress by Topic',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1A1A1A),
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-
-                  // Using the ProgressCard component from progress_bar.dart
                   const ProgressCard(
                     title: 'Traffic Signs',
                     currentProgress: 47,
@@ -327,8 +316,6 @@ class ProgressScreen extends StatelessWidget {
                     totalProgress: 50,
                   ),
                   const SizedBox(height: 24),
-
-                  // Using the existing ContactUsCard component
                   const ContactUsCard(),
                   const SizedBox(height: 24),
                 ],
@@ -340,7 +327,8 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard({
+  Widget _buildStatCard(
+    BuildContext context, {
     required IconData icon,
     required String value,
     required String label,
@@ -349,7 +337,9 @@ class ProgressScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color(0xFF1A1A2E)
+            : Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -375,8 +365,8 @@ class ProgressScreen extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
-              color: Color(0xFF8E8E93),
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xFF8E8E93),
               fontSize: 12,
             ),
           ),

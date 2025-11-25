@@ -23,7 +23,9 @@ class TipsCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF1A1A2E)
+              : AppColors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
             BoxShadow(
@@ -33,18 +35,14 @@ class TipsCard extends StatelessWidget {
               spreadRadius: 1,
             ),
           ], 
-        
           border: Border.all(
             color: AppColors.white,
             width: 2,
           ),
-          
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-                        
-            // Icon
             Container(
               width: 48,
               height: 48,
@@ -67,26 +65,24 @@ class TipsCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            
-            // Text content
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       height: 1.4,
                     ),
                   ),

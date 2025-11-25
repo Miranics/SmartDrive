@@ -10,10 +10,9 @@ class PracticalTipsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
-          // Page Header
           PageHeader(
             title: 'Practical Tips',
             subtitle: 'Expert advice for your driving test',
@@ -21,8 +20,6 @@ class PracticalTipsPage extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-
-          // Scrollable content
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
@@ -151,8 +148,6 @@ class PracticalTipsPage extends StatelessWidget {
               ),
             ),
           ),
-
-          // Contact Us Card at bottom
           const ContactUsCard(),
         ],
       ),
@@ -160,7 +155,6 @@ class PracticalTipsPage extends StatelessWidget {
   }
 }
 
-// Tips Detail Page
 class TipsDetailPage extends StatelessWidget {
   final String title;
   final List<String> tips;
@@ -174,7 +168,7 @@ class TipsDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           PageHeader(
@@ -193,7 +187,9 @@ class TipsDetailPage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.paleBlue,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF1A1A2E)
+                        : AppColors.paleBlue,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: AppColors.primaryBlue,
@@ -225,9 +221,9 @@ class TipsDetailPage extends StatelessWidget {
                       Expanded(
                         child: Text(
                           tips[index],
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: AppColors.textPrimary,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                             height: 1.4,
                           ),
                         ),

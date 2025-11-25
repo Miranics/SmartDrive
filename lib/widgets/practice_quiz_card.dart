@@ -23,40 +23,38 @@ class PracticeQuizCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: Colors.grey.shade200),
       ),
-      // 1. Set Main Card color to white
-      color: Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? const Color(0xFF1A1A2E)
+          : Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // --- 1. THE QUESTION SECTION ---
-          // I changed this to White to match "background of the whole thing becomes white"
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Colors.white, // Changed from blueGrey[50] to white
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF1A1A2E)
+                  : Colors.white,
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
             ),
             child: Text(
               questionText,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-
-          // Content padding for Image and Options
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                // --- 2. THE OPTIMIZED IMAGE SECTION ---
                 if (imageAssetPath != null) ...[
                   Container(
                     constraints: const BoxConstraints(maxHeight: 200),
@@ -72,13 +70,11 @@ class PracticeQuizCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                 ],
-
-                // --- 3. The Options ---
                 ...options.asMap().entries.map((entry) {
                   int idx = entry.key;
                   String optionText = entry.value;
                   String label = String.fromCharCode(65 + idx);
-                  return _buildOptionTile(label, optionText, idx);
+                  return _buildOptionTile(context, label, optionText, idx);
                 }),
               ],
             ),
@@ -88,7 +84,7 @@ class PracticeQuizCard extends StatelessWidget {
     );
   }
 
-  Widget _buildOptionTile(String label, String text, int index) {
+  Widget _buildOptionTile(BuildContext context, String label, String text, int index) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: InkWell(
@@ -97,13 +93,16 @@ class PracticeQuizCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
           decoration: BoxDecoration(
-            // 2. THIS IS WHERE THE GRADIENT GOES
-            // Replaced solid color with the gradient you requested
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xFFFFFFFF), // #FFFFFF (white)
-                Color(0xFFFDF6F6), // #FDF6F6 (light pink/beige)
-              ],
+            gradient: LinearGradient(
+              colors: Theme.of(context).brightness == Brightness.dark
+                  ? [
+                      const Color(0xFF1A1A2E),
+                      const Color(0xFF0F3460),
+                    ]
+                  : [
+                      const Color(0xFFFFFFFF),
+                      const Color(0xFFFDF6F6),
+                    ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -123,7 +122,15 @@ class PracticeQuizCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(child: Text(text, style: const TextStyle(fontSize: 16))),
+              Expanded(
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
