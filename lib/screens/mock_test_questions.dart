@@ -5,6 +5,7 @@ import 'package:smartdrive/constants/app_colors.dart';
 import 'package:smartdrive/screens/mock_test_scores.dart';
 import 'package:smartdrive/models/provisional_question.dart';
 import 'package:smartdrive/services/provisional_exam_service.dart';
+import 'package:smartdrive/services/auth_service.dart';
 
 // Questions provider - fetches from Firestore
 final mockTestQuestionsProvider = FutureProvider<List<ProvisionalQuestion>>((ref) async {
@@ -94,19 +95,45 @@ class _MockTestQuestionsPageState extends ConsumerState<MockTestQuestionsPage> {
     }
   }
 
-  void _submitTest(List<ProvisionalQuestion> questions) {
+  void _submitTest(List<ProvisionalQuestion> questions) async {
     final selectedAnswers = ref.read(selectedAnswersProvider);
     final secondsRemaining = ref.read(secondsRemainingProvider);
     
-    // Calculate score
+    // Calculate score and category breakdown
     int correctAnswers = 0;
+    final categoryBreakdown = <String, Map<String, int>>{};
+    
     for (int i = 0; i < questions.length; i++) {
+      final question = questions[i];
+      final category = question.category ?? 'Other';
       final selectedKey = selectedAnswers[i];
-      if (selectedKey != null && questions[i].isCorrect(selectedKey)) {
-        correctAnswers++;
+      final isCorrect = selectedKey != null && question.isCorrect(selectedKey);
+      
+      if (isCorrect) correctAnswers++;
+      
+      categoryBreakdown[category] = categoryBreakdown[category] ?? {'questionsAnswered': 0, 'correctAnswers': 0};
+      categoryBreakdown[category]!['questionsAnswered'] = (categoryBreakdown[category]!['questionsAnswered'] ?? 0) + 1;
+      if (isCorrect) {
+        categoryBreakdown[category]!['correctAnswers'] = (categoryBreakdown[category]!['correctAnswers'] ?? 0) + 1;
       }
     }
 
+    // Record attempt to Firestore
+    final user = AuthService.currentUser;
+    if (user != null) {
+      try {
+        await ProvisionalExamService.recordAttempt(
+          uid: user.uid,
+          totalQuestions: questions.length,
+          correctAnswers: correctAnswers,
+          categoryBreakdown: categoryBreakdown,
+        );
+      } catch (e) {
+        debugPrint('Error recording attempt: $e');
+      }
+    }
+
+    if (!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartdrive/constants/app_colors.dart';
 import 'package:smartdrive/widgets/page_header.dart';
 import 'package:smartdrive/widgets/contact_us_card.dart';
 import 'package:smartdrive/widgets/button_component.dart';
 import 'package:smartdrive/screens/mock_test_questions.dart';
 
-class MockTestPage extends StatelessWidget {
+class MockTestPage extends ConsumerWidget {
   const MockTestPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
@@ -99,6 +100,13 @@ class MockTestPage extends StatelessWidget {
                         text: 'Start Test',
                         type: ButtonType.secondary,
                         onPressed: () {
+                          // Reset all providers for fresh quiz
+                          ref.invalidate(mockTestQuestionsProvider);
+                          ref.invalidate(currentQuestionIndexProvider);
+                          ref.invalidate(selectedAnswersProvider);
+                          ref.invalidate(secondsRemainingProvider);
+                          ref.invalidate(timeUpProvider);
+                          
                           Navigator.push(
                             context,
                             MaterialPageRoute(

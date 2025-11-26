@@ -11,17 +11,17 @@ class PracticalTipsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          PageHeader(
-            title: 'Practical Tips',
-            subtitle: 'Expert advice for your driving test',
-            onBackPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          Expanded(
-            child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            PageHeader(
+              title: 'Practical Tips',
+              subtitle: 'Expert advice for your driving test',
+              onBackPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
@@ -144,12 +144,12 @@ class PracticalTipsPage extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
+                  const ContactUsCard(),
                 ],
               ),
             ),
-          ),
-          const ContactUsCard(),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -169,7 +169,8 @@ class TipsDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Column(
+      body: ListView(
+        padding: EdgeInsets.zero,
         children: [
           PageHeader(
             title: title,
@@ -178,11 +179,10 @@ class TipsDetailPage extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: tips.length,
-              itemBuilder: (context, index) {
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: List.generate(tips.length, (index) {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(16),
@@ -231,7 +231,7 @@ class TipsDetailPage extends StatelessWidget {
                     ],
                   ),
                 );
-              },
+              }),
             ),
           ),
           const ContactUsCard(),

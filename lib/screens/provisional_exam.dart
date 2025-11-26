@@ -19,19 +19,15 @@ class ProvisionalExamPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          // Scrollable content
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Page Header using PageHeader widget
-                  PageHeader(
-                    title: 'Provisional Exam',
-                    subtitle: 'Practice for your provisional driving exam',
-                    onBackPressed: () => Navigator.of(context).pop(),
-                  ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Page Header using PageHeader widget
+            PageHeader(
+              title: 'Provisional Exam',
+              subtitle: 'Practice for your provisional driving exam',
+              onBackPressed: () => Navigator.of(context).pop(),
+            ),
                   const SizedBox(height: 24),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -149,14 +145,10 @@ class ProvisionalExamPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
+                  ContactUsCard(),
                 ],
               ),
             ),
-          ),
-          // Contact Us Footer - always visible at bottom, fills entire width
-          ContactUsCard(),
-        ],
-      ),
     );
   }
 

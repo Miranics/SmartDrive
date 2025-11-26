@@ -64,7 +64,7 @@ class _SignupState extends State<Signup> {
   }
 
   void _navigateToLogin() {
-    Navigator.of(context).pushReplacementNamed('/login');
+    Navigator.of(context).pop();
   }
 
   @override

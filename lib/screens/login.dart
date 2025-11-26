@@ -117,9 +117,9 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _navigateToSignup() async {
-    final result = await Navigator.of(context).pushNamed<String>('/signup');
+    final result = await Navigator.of(context).pushNamed('/signup');
     if (!mounted) return;
-    if (result != null && result.isNotEmpty) {
+    if (result != null && result is String && result.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result)),
       );
