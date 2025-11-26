@@ -40,6 +40,16 @@ class VerifyEmailScreen extends StatelessWidget {
               child: const Text('Resend verification email'),
             ),
             const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                if (!context.mounted) return;
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/login', (route) => false);
+              },
+              child: const Text('I have verified – Sign in'),
+            ),
+            const SizedBox(height: 12),
             TextButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();

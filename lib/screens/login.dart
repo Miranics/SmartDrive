@@ -83,7 +83,25 @@ class _LoginState extends State<Login> {
       }
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      final message = e.message ?? 'Login failed';
+      final email = _emailController.text.trim();
+
+      String message;
+      switch (e.code) {
+        case 'user-not-found':
+          message =
+              "We couldn't find an account for $email. Please sign up and verify your email before logging in.";
+          break;
+        case 'user-disabled':
+          message =
+              'This account has been disabled. Contact support if you think this is a mistake.';
+          break;
+        case 'wrong-password':
+          message = 'Incorrect password. Double-check it or reset your password.';
+          break;
+        default:
+          message = e.message ?? 'Login failed. Please try again.';
+      }
+
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(message)));
     } catch (e) {
