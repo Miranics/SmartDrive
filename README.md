@@ -52,33 +52,53 @@ SmartDrive is a mobile application built with Flutter that helps learners prepar
 
 ### Authentication Screens
 
-[Screenshot: Homepage/Landing Page]
+Homepage/Landing Page
 
-[Screenshot: Login Screen]
+<img width="523" height="1005" alt="image" src="https://github.com/user-attachments/assets/0ecdfbf7-3aad-4078-be12-296d5b0ad085" />
 
-[Screenshot: Sign Up Screen]
+Login Screen
 
-[Screenshot: Email Verification Screen]
+<img width="526" height="1011" alt="image" src="https://github.com/user-attachments/assets/fccc4d5f-cca8-4318-ba93-7103149c57d2" />
+
+Sign Up Screen
+
+<img width="518" height="1005" alt="image" src="https://github.com/user-attachments/assets/6a12d1bf-70e2-42d9-bd80-e9b2f2e613df" />
 
 ### Main Application Screens
 
-[Screenshot: Welcome Page]
+Welcome Page
 
-[Screenshot: Provisional Exam Dashboard]
+<img width="493" height="1003" alt="image" src="https://github.com/user-attachments/assets/b27752a2-5e66-4cfe-9246-3b5d2768351e" />
 
-[Screenshot: Practice Quiz]
+Provisional Exam Dashboard
 
-[Screenshot: Mock Test]
+<img width="481" height="1020" alt="image" src="https://github.com/user-attachments/assets/9b23539d-adb6-4c99-bdf5-c088e6febef7" />
+
+Practice Quiz
+
+<img width="519" height="1006" alt="image" src="https://github.com/user-attachments/assets/308ab298-1bb1-4a31-8556-44be385408fb" />
+
+Mock Test
+
+<img width="533" height="1009" alt="image" src="https://github.com/user-attachments/assets/cd772994-f631-4515-a10e-223156c88d0c" />
 
 ### Progress and Settings
 
-[Screenshot: Progress Screen]
+Progress Screen
 
-[Screenshot: Flashcards]
+<img width="507" height="1004" alt="image" src="https://github.com/user-attachments/assets/260e30e3-5fd7-4331-a5a4-b894ba77f586" />
 
-[Screenshot: Practical Tips]
+Flashcards
 
-[Screenshot: Settings Page]
+<img width="519" height="1014" alt="image" src="https://github.com/user-attachments/assets/e95cbb35-bc0a-4737-9f07-ebf68971466d" />
+
+Practical Tips
+
+<img width="502" height="1020" alt="image" src="https://github.com/user-attachments/assets/62d039de-cdca-4356-ade5-189a23390c9a" />
+
+Settings Page
+
+<img width="515" height="1009" alt="image" src="https://github.com/user-attachments/assets/0a2c670e-49be-4e11-9b60-f8f581adcfdd" />
 
 ## Technology Stack
 
@@ -567,7 +587,5 @@ For questions, issues, or feature requests:
 - Flutter team for the framework
 - Google Fonts for typography
 - Rwanda driving regulations for content guidance
-
----
 
 Made With Love for aspiring drivers
