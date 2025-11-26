@@ -1,6 +1,6 @@
-# Backend Setup (Firebase + Supabase Storage)
+# Backend Setup (Firebase Only)
 
-Follow these steps to connect the SmartDrive Flutter app to your cloud backend.
+Follow these steps to connect the SmartDrive Flutter app to Firebase services.
 
 ## 1. Prerequisites
 
@@ -8,7 +8,6 @@ Follow these steps to connect the SmartDrive Flutter app to your cloud backend.
 - Firebase CLI: `npm install -g firebase-tools`
 - FlutterFire CLI: `dart pub global activate flutterfire_cli`
 - A Firebase project named **SmartDrive** (or any name you prefer)
-- A Supabase project with a storage bucket (default bucket name in code: `smartdrive-files`)
 
 ## 2. Configure Firebase
 
@@ -30,44 +29,20 @@ Follow these steps to connect the SmartDrive Flutter app to your cloud backend.
 5. Web/Desktop:
    - FlutterFire already injects the configuration; just ensure `web/index.html` contains `<script src="/__/firebase/init.js"></script>` (added automatically by FlutterFire 3+).
 
-## 3. Configure Supabase Storage
+## 3. Optional runtime overrides
 
-1. In the Supabase dashboard, create a new project and note the **Project URL** and **anon public API key**.
-2. In the **Storage** tab, create a bucket named `smartdrive-files` (or any bucket—if you rename it, pass `--dart-define SUPABASE_STORAGE_BUCKET=<name>` when running the app).
-3. Optionally relax the bucket policy to allow authenticated users to upload/read. Example policy:
-   ```sql
-   create policy "Allow authenticated uploads"
-   on storage.objects for insert
-   with check ( auth.role() = 'authenticated' );
-   ```
-
-## 4. Provide runtime secrets
-
-Request the latest `.env` file from the project owner and place it at the repository root (the file stays untracked in git):
+SmartDrive reads the `.env` file (via `flutter_dotenv`) if you need to override the Firebase email verification redirect URL. Create `.env` at the repository root with:
 
 ```
-SUPABASE_URL=https://<your-project>.supabase.co
-SUPABASE_ANON_KEY=<anon-key>
-SUPABASE_STORAGE_BUCKET=smartdrive-files
+FIREBASE_EMAIL_REDIRECT_URL=https://smartdrive-dc55d.firebaseapp.com
 ```
 
-Run the app with:
+If the file is omitted, the default value above is used automatically.
 
-```powershell
-flutter run --dart-define-from-file=.env
-```
+## 4. Verify the integration
 
-If your Flutter version does not support `--dart-define-from-file`, pass each value manually:
-
-```powershell
-flutter run --dart-define SUPABASE_URL=... --dart-define SUPABASE_ANON_KEY=...
-```
-
-## 5. Verify the integration
-
-1. Launch the app. The splash/login screen initializes Firebase + Supabase before building the UI.
+1. Launch the app. The splash/login screen initializes Firebase before building the UI.
 2. Create a new account via **Sign Up**; check the Firebase Console → Authentication tab to confirm the user record.
-3. Log in with the new account. You should land on the Home screen.
-4. Use the **Upload to Supabase Storage** card to choose a local file. A successful upload returns a public URL that you can open from the Storage browser inside Supabase.
+3. Log in with the new account. You should land on the Home screen and can access quizzes, progress, and mock tests backed by Firestore data.
 
-Once these steps succeed, the backend is fully connected and ready for additional features such as Firestore-powered content or Supabase-based asset storage.
+Once these steps succeed, the backend is fully connected and ready for additional Firestore-powered content.

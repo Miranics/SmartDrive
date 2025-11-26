@@ -9,7 +9,6 @@
 - **📊 Progress Tracking**: Visual progress indicators to track learning advancement
 - **🎯 Mock Tests**: Comprehensive practice tests simulating the actual provisional exam
 - **💡 Driving Tips**: Practical tips and guidance for real-world driving scenarios
-- **☁️ Cloud Storage**: File upload and management using Supabase Storage
 - **🎨 Modern UI**: Clean, intuitive interface with Material Design 3 and custom fonts
 
 ## 🏗️ Architecture
@@ -18,9 +17,8 @@
 
 - **Frontend**: Flutter 3.9.0+ with Material Design 3
 - **Backend Services**:
-  - Firebase Authentication (user management & email verification)
-  - Cloud Firestore (data storage)
-  - Supabase Storage (file uploads & asset management)
+   - Firebase Authentication (user management & email verification)
+   - Cloud Firestore (data storage)
 - **State Management**: StreamBuilder for reactive authentication state
 - **Custom Fonts**: NicoMoji for branding, Google Fonts (Montserrat) for content
 
@@ -43,7 +41,6 @@ lib/
 │   └── WelcomePage.dart      # Onboarding screen
 ├── services/
 │   ├── auth_service.dart     # Firebase auth wrapper
-│   └── storage_service.dart  # Supabase storage utilities
 └── widgets/
     └── [Reusable UI components]
 ```
@@ -57,7 +54,6 @@ lib/
 - Firebase CLI: `npm install -g firebase-tools`
 - FlutterFire CLI: `dart pub global activate flutterfire_cli`
 - A Firebase project
-- A Supabase project with storage bucket
 
 ### Installation
 
@@ -84,19 +80,9 @@ lib/
    - Place `google-services.json` in `android/app/`
    - Place `GoogleService-Info.plist` in `ios/Runner/` and `macos/Runner/`
 
-4. **Configure Supabase**
-   
-   Create a `.env` file in the project root:
-   
-   ```env
-   SUPABASE_URL=https://<your-project>.supabase.co
-   SUPABASE_ANON_KEY=<your-anon-key>
-   SUPABASE_STORAGE_BUCKET=smartdrive-files
-   ```
-
-5. **Run the app**
+4. **Run the app**
    ```bash
-   flutter run --dart-define-from-file=.env
+   flutter run
    ```
 
 ## 📦 Dependencies
@@ -105,10 +91,8 @@ lib/
 - `firebase_core` ^3.6.0 - Firebase initialization
 - `firebase_auth` ^5.3.2 - User authentication
 - `cloud_firestore` ^5.4.4 - Cloud database
-- `supabase_flutter` ^2.6.0 - Supabase integration
 - `flutter_dotenv` ^5.1.0 - Environment variable management
 - `google_fonts` ^6.1.0 - Custom typography
-- `file_picker` ^8.1.2 - File selection utilities
 - `cupertino_icons` ^1.0.8 - iOS-style icons
 
 ### Dev Dependencies
@@ -136,7 +120,6 @@ lib/
 - Firebase Authentication handles secure credential storage
 - Email verification prevents unauthorized access
 - Environment variables keep API keys out of version control
-- Supabase Row Level Security (RLS) policies control data access
 
 ## 🌍 Localization
 
@@ -169,7 +152,6 @@ For questions or issues:
 ## 🙏 Acknowledgments
 
 - Firebase for authentication and database services
-- Supabase for storage solutions
 - Flutter team for the amazing framework
 - Google Fonts for typography
 

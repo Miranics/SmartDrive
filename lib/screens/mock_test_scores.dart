@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartdrive/constants/app_colors.dart';
 import 'package:smartdrive/widgets/page_header.dart';
 import 'package:smartdrive/widgets/contact_us_card.dart';
 import 'package:smartdrive/widgets/button_component.dart';
-import 'package:smartdrive/screens/mock_test_questions.dart';
 
-class MockTestScoresPage extends ConsumerWidget {
+class MockTestScoresPage extends StatelessWidget {
   final int correctAnswers;
   final int totalQuestions;
   final int timeUsed; // in seconds
@@ -28,7 +26,7 @@ class MockTestScoresPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
@@ -174,19 +172,7 @@ class MockTestScoresPage extends ConsumerWidget {
                     text: 'Try Again',
                     type: ButtonType.small,
                     onPressed: () {
-                      // Reset providers for new test
-                      ref.invalidate(mockTestQuestionsProvider);
-                      ref.read(currentQuestionIndexProvider.notifier).state = 0;
-                      ref.read(selectedAnswersProvider.notifier).state = {};
-                      ref.read(secondsRemainingProvider.notifier).state = 1200;
-                      ref.read(timeUpProvider.notifier).state = false;
-                      
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MockTestQuestionsPage(),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                   const SizedBox(height: 16),

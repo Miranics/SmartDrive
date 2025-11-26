@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryStats {
   const CategoryStats({
@@ -38,9 +37,6 @@ class UserExamStats {
     required this.correctAnswers,
     this.lastTakenAt,
     this.categoryStats = const {},
-    this.bestScore = 0,
-    this.streak = 0,
-    this.lastStreakDate,
   });
 
   final String uid;
@@ -49,9 +45,6 @@ class UserExamStats {
   final int correctAnswers;
   final DateTime? lastTakenAt;
   final Map<String, CategoryStats> categoryStats;
-  final int bestScore;
-  final int streak;
-  final DateTime? lastStreakDate;
 
   double get averageScore {
     if (questionsAnswered == 0) return 0;
@@ -74,9 +67,6 @@ class UserExamStats {
       correctAnswers: (data['correctAnswers'] as num?)?.toInt() ?? 0,
       lastTakenAt: (data['lastTakenAt'] as Timestamp?)?.toDate(),
       categoryStats: categoryStats,
-      bestScore: (data['bestScore'] as num?)?.toInt() ?? 0,
-      streak: (data['streak'] as num?)?.toInt() ?? 0,
-      lastStreakDate: (data['lastStreakDate'] as Timestamp?)?.toDate(),
     );
   }
 }

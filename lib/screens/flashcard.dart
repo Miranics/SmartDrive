@@ -179,9 +179,12 @@ class _FlashcardPageState extends State<FlashcardPage> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
                   PageHeader(
                     title: 'Flashcards',
                     subtitle: 'Traffic signs and rules',
@@ -284,10 +287,13 @@ class _FlashcardPageState extends State<FlashcardPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const ContactUsCard(),
                 ],
               ),
             ),
+          ),
+          const ContactUsCard(),
+        ],
+      ),
     );
   }
 }

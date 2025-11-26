@@ -19,9 +19,13 @@ class ProvisionalExamPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: Column(
+        children: [
+          // Scrollable content
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
                   // Page Header using PageHeader widget
                   PageHeader(
                     title: 'Provisional Exam',
@@ -145,10 +149,14 @@ class ProvisionalExamPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  ContactUsCard(),
                 ],
               ),
             ),
+          ),
+          // Contact Us Footer - always visible at bottom, fills entire width
+          ContactUsCard(),
+        ],
+      ),
     );
   }
 
@@ -261,11 +269,11 @@ class _StatsSection extends StatelessWidget {
       stream: ProvisionalExamService.streamUserStats(userId!),
       builder: (context, snapshot) {
         final stats = snapshot.data;
-        final testsTakenText = stats?.testsTaken.toString() ?? '0';
-        final answeredText = stats?.questionsAnswered.toString() ?? '0';
-        final accuracyText = stats != null
-            ? '${stats.averageScore.toStringAsFixed(0)}%'
-            : '0%';
+        final testsTakenText = stats?.testsTaken.toString() ?? '--';
+        final answeredText = stats?.questionsAnswered.toString() ?? '--';
+        final accuracyText = (stats == null || stats.questionsAnswered == 0)
+            ? '--'
+            : '${stats.averageScore.toStringAsFixed(0)}%';
 
         return Column(
           children: [

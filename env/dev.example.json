@@ -1,5 +1,0 @@
-{
-  "SUPABASE_URL": "https://your-project-id.supabase.co",
-  "SUPABASE_ANON_KEY": "paste-your-anon-or-service-key",
-  "SUPABASE_STORAGE_BUCKET": "smartdrive-files"
-}

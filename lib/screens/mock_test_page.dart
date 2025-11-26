@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartdrive/constants/app_colors.dart';
 import 'package:smartdrive/widgets/page_header.dart';
 import 'package:smartdrive/widgets/contact_us_card.dart';
 import 'package:smartdrive/widgets/button_component.dart';
 import 'package:smartdrive/screens/mock_test_questions.dart';
 
-class MockTestPage extends ConsumerWidget {
+class MockTestPage extends StatelessWidget {
   const MockTestPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-                  // Page Header
-                  PageHeader(
-                    title: 'Mock Test',
-                    subtitle: 'Full Exam stimulation',
-                    onBackPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Container(
+      body: Column(
+        children: [
+          // Page Header
+          PageHeader(
+            title: 'Mock Test',
+            subtitle: 'Full Exam stimulation',
+            onBackPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          
+          // Main Content
+          Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                padding: const EdgeInsets.all(20),
+                child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
@@ -96,13 +99,6 @@ class MockTestPage extends ConsumerWidget {
                         text: 'Start Test',
                         type: ButtonType.secondary,
                         onPressed: () {
-                          // Reset all providers for fresh quiz
-                          ref.invalidate(mockTestQuestionsProvider);
-                          ref.invalidate(currentQuestionIndexProvider);
-                          ref.invalidate(selectedAnswersProvider);
-                          ref.invalidate(secondsRemainingProvider);
-                          ref.invalidate(timeUpProvider);
-                          
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -110,18 +106,21 @@ class MockTestPage extends ConsumerWidget {
                             ),
                           );
                         },
-                      ),
+                      ), 
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
-              ContactUsCard(),
-          ],
+              // Contact Us Card
+              const ContactUsCard(),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      ),  
+    ],
+  ),
+);
+}
 
   Widget _buildDetailRow(String label, String value) {
     return Builder(

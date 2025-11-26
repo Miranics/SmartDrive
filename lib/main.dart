@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartdrive/config/runtime_env.dart';
 import 'package:smartdrive/core/theme/app_theme.dart';
 import 'package:smartdrive/core/router/route_guard.dart';
 import 'package:smartdrive/providers/theme_provider.dart';
@@ -21,17 +20,10 @@ import 'package:smartdrive/screens/QuizPage.dart';
 import 'package:smartdrive/screens/progress_screen.dart';
 import 'package:smartdrive/screens/mock_test_page.dart';
 
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _loadEnvFile();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  await Supabase.initialize(
-    url: RuntimeEnv.supabaseUrl,
-    anonKey: RuntimeEnv.supabaseAnonKey,
-  );
 
   runApp(const ProviderScope(child: MyApp()));
 }
