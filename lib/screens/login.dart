@@ -71,15 +71,15 @@ class _LoginState extends State<Login> {
         await _saveRememberMe();
         Navigator.of(context).pushNamedAndRemoveUntil('/welcome', (route) => false);
       } else {
-        await AuthService.sendVerificationEmail();
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
-              'Verification link sent to ${user?.email ?? 'your email'}. Open it, confirm, then tap "I verified" on the next screen.',
+              'Please verify your email before logging in. Check your inbox for the verification link.',
             ),
           ),
         );
+        await AuthService.signOut();
       }
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;

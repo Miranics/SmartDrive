@@ -5,6 +5,7 @@ class AuthService {
   AuthService._();
 
   static FirebaseAuth get _auth => FirebaseAuth.instance;
+  static DateTime? _lastVerificationEmailSent;
 
   static Stream<User?> get authChanges => _auth.userChanges();
 
@@ -47,8 +48,17 @@ class AuthService {
     }
     if (user.emailVerified && !force) return;
 
+    // Prevent sending emails more than once per minute
+    if (_lastVerificationEmailSent != null && !force) {
+      final timeSinceLastEmail = DateTime.now().difference(_lastVerificationEmailSent!);
+      if (timeSinceLastEmail.inSeconds < 60) {
+        return; // Skip sending if less than 60 seconds since last email
+      }
+    }
+
     final settings = _buildActionCodeSettings();
     await user.sendEmailVerification(settings);
+    _lastVerificationEmailSent = DateTime.now();
   }
 
   static Future<void> reloadCurrentUser() async {
