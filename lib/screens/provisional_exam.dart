@@ -5,7 +5,7 @@ import 'package:smartdrive/constants/app_colors.dart';
 import 'package:smartdrive/screens/flashcard.dart';
 
 class ProvisionalExamPage extends StatelessWidget {
-  const ProvisionalExamPage({Key? key}) : super(key: key);
+  const ProvisionalExamPage({super.key});
 
   @override
   Widget build(BuildContext context) {

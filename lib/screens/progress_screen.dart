@@ -4,7 +4,7 @@ import 'package:smartdrive/widgets/contact_us_card.dart';
 import 'package:smartdrive/widgets/progress_bar.dart';
 
 class ProgressScreen extends StatelessWidget {
-  const ProgressScreen({Key? key}) : super(key: key);
+  const ProgressScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
